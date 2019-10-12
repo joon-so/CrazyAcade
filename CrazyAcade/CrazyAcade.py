@@ -46,6 +46,7 @@ def handle_events():
 def make_stage1():
     global stage1_block_state, stage1_block_x, stage1_block_y
     global stage1_tree_state, stage1_tree_x, stage1_tree_y
+    global stage1_house_state, stage1_house_x, stage1_house_y
     global stage1, stage1_box1, stage1_box2, stage1_box3, stage1_tree
     global stage1_house1, stage1_house2, stage1_house3
     clear_canvas()
@@ -53,6 +54,13 @@ def make_stage1():
     stage1.draw(WIDTH // 2, HEIGHT // 2)
     for n in range(16):
         stage1_tree.draw(stage1_tree_x[n], stage1_tree_y[n])
+    for n in range(30):
+        if n <= 11:
+            stage1_house1.draw(stage1_house_x[n], stage1_house_y[n])
+        elif 11 < n <= 20:
+            stage1_house2.draw(stage1_house_x[n], stage1_house_y[n])
+        elif 20 < n <= 29:
+            stage1_house3.draw(stage1_house_x[n], stage1_house_y[n])
 
     update_canvas()
     pass
@@ -98,7 +106,7 @@ for i in range(16):
         elif i == 9:
             tree_x = 401.8
             tree_y = 595
-        tree_y -= 80
+        tree_y -= 81
     elif 10 < i <= 16:
         if i == 11:
             tree_x = 241
@@ -106,10 +114,53 @@ for i in range(16):
         elif i == 13:
             tree_x = 401.8
             tree_y = 355
-        tree_y -= 80
+        tree_y -= 81
     stage1_tree_state.append(1)
     stage1_tree_x.append(tree_x)
     stage1_tree_y.append(tree_y)
+
+house_x, house_y = 0, 0
+stage1_house_state = []
+stage1_house_x = []
+stage1_house_y = []
+for i in range(30):
+    if i <= 5:
+        house_y -= 80
+        if i == 3:
+            house_x, house_y = 160.6, 510
+        if i == 0:
+            house_x, house_y = 80.2, 510
+    elif 5 < i <= 11:
+        house_y -= 80
+        if i == 9:
+            house_x, house_y = 561, 270
+        if i == 6:
+            house_x, house_y = 480.2, 270
+    elif 11 < i <= 20:
+        if i == 12:
+            house_x = 39
+            house_y = 310
+        elif i == 15:
+            house_x = 120
+            house_y = 310
+        elif i == 18:
+            house_x = 200
+            house_y = 310
+        house_y -= 81
+    elif 20 < i <= 29:
+        if i == 21:
+            house_x = 441.4
+            house_y = 631.5
+        elif i == 24:
+            house_x = 521
+            house_y = 631.5
+        elif i == 27:
+            house_x = 601
+            house_y = 631.5
+        house_y -= 81
+    stage1_house_state.append(1)
+    stage1_house_x.append(house_x)
+    stage1_house_y.append(house_y)
 
 block_x, block_y = 0, 0
 stage1_block_state = []
