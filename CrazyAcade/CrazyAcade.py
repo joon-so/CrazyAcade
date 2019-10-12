@@ -43,10 +43,21 @@ def handle_events():
     pass
 
 
+def make_menu():
+    global menu, Help, game_start, out
+    global game_frame
+    clear_canvas()
+
+    menu.draw(WIDTH // 2, HEIGHT // 2)
+    game_start.clip_draw(game_frame * 192, 0, 192, 55, 400, 195)
+    out.clip_draw(game_frame * 140, 0, 140, 55, 405, 145)
+    game_frame =(game_frame + 1) % 2
+    update_canvas()
+    pass
+
+
 def make_stage1():
     global stage1_block_state, stage1_block_x, stage1_block_y
-    #global stage1_tree_state, stage1_tree_x, stage1_tree_y
-    #global stage1_house_state, stage1_house_x, stage1_house_y
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_tree
     global stage1_house1, stage1_house2, stage1_house3
     global box_frame_x, box_frame_y
@@ -116,6 +127,10 @@ open_canvas(WIDTH, HEIGHT)
 
 menu = load_image('Main.png')
 Help = load_image('Help_key.png')
+game_start = load_image('Game_start.png')
+out = load_image('InGame_Button_Out.png')
+game_frame = 0
+
 stage1_map = load_image('Stage1.png')
 stage1_box1 = load_image('vilige_Box_0_M1.png')
 stage1_box2 = load_image('vilige_Box_1_M1.png')
@@ -131,6 +146,7 @@ stage2_box2 = load_image('pirate_Box_1.png')
 stage2_box3 = load_image('pirate_Box_2.png')
 stage2_box4 = load_image('pirate_Box_3.png')
 stage2_box5 = load_image('pirate_Box_4.png')
+
 bazzi = load_image('Character1_edit.png')
 
 
@@ -142,10 +158,10 @@ bazzi_frame_x = 0
 box_frame_x, box_frame_y = 0, 2
 dir = 0
 
-
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
 # y : bottom 148 ~ 540 top
+
 block_x, block_y = 39, 540
 box_color = 0
 box_broken = 0
@@ -268,17 +284,18 @@ for i in range(195):
 while running:
 
     if stage == 0:
-        menu.draw(WIDTH // 2, HEIGHT // 2)
+        make_menu()
+        delay(0.2)
     # bazzi.clip_draw(bazzi_frame_x * 100, bazzi_frame_y * 119, 60, 60, bazzi_x, 90)
     elif stage == 1:
         make_stage1()
+        delay(0.03)
     elif stage == 2:
         make_stage2()
+        delay(0.03)
 
     handle_events()
     # frame = (frame + 1) % 8
     # bazzi_x += dir * 15
-
-    delay(0.02)
 
 close_canvas()
