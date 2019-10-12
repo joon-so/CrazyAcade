@@ -82,12 +82,41 @@ def make_stage1():
     pass
 
 
+def make_stage2():
+    global stage2_block_state, stage2_block_x, stage2_block_y
+    global stage2_map, stage2_box1, stage2_box2, stage2_box3, stage2_box4, stage2_box5
+    global box_frame_x, box_frame_y
+    clear_canvas()
+
+    stage2_map.draw(WIDTH // 2, HEIGHT // 2)
+    # stage2_block_state
+    # 0: NULL
+    # 1: wood block
+    # 2: block1
+    # 3: block2
+    # 4: no broken1
+    # 5: no broken2
+    # x 80.4 , y 81
+    for n in range(195):
+        if stage2_block_state[n] == 1:
+            stage2_box1.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage2_block_x[n], stage2_block_y[n])
+        elif stage2_block_state[n] == 2:
+            stage2_box2.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage2_block_x[n], stage2_block_y[n])
+        elif stage2_block_state[n] == 3:
+            stage2_box3.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage2_block_x[n], stage2_block_y[n])
+        elif stage2_block_state[n] == 4:
+            stage2_box4.clip_draw(0, 0, 41, 57, stage2_block_x[n], stage2_block_y[n] + 7)
+        elif stage2_block_state[n] == 5:
+            stage2_box5.clip_draw(0, 0, 40, 70, stage2_block_x[n], stage2_block_y[n] + 15)
+    update_canvas()
+    pass
+
+
 open_canvas(WIDTH, HEIGHT)
 
 menu = load_image('Main.png')
 Help = load_image('Help_key.png')
 stage1_map = load_image('Stage1.png')
-stage2_map = load_image('Stage2.png')
 stage1_box1 = load_image('vilige_Box_0_M1.png')
 stage1_box2 = load_image('vilige_Box_1_M1.png')
 stage1_box3 = load_image('vilige_Box_2_M1.png')
@@ -95,10 +124,18 @@ stage1_house1 = load_image('vilige_House_0.png')
 stage1_house2 = load_image('vilige_House_1.png')
 stage1_house3 = load_image('vilige_House_2.png')
 stage1_tree = load_image('vilige_Tree.png')
+
+stage2_map = load_image('Stage2.png')
+stage2_box1 = load_image('pirate_Box_0.png')
+stage2_box2 = load_image('pirate_Box_1.png')
+stage2_box3 = load_image('pirate_Box_2.png')
+stage2_box4 = load_image('pirate_Box_3.png')
+stage2_box5 = load_image('pirate_Box_4.png')
 bazzi = load_image('Character1_edit.png')
 
+
 running = True
-stage = 1
+stage = 2
 bazzi_x = 800 // 2
 bazzi_frame_y = 2
 bazzi_frame_x = 0
@@ -175,6 +212,59 @@ for n in range(195):
     stage1_block_y.append(block_y)
     block_x += 40.2
 
+block_x, block_y = 39, 540
+stage2_block_state = []
+stage2_block_broken = []
+stage2_block_x = []
+stage2_block_y = []
+for i in range(195):
+    if block_x > 610:
+        block_y -= 40
+        block_x = 39
+    # wood box
+    if i == 19 or i == 20 or i == 21 or i == 23 or i == 24 or i == 25 or i == 33 or i == 37 or i == 41 \
+            or i == 47 or i == 57 or i == 62 or i == 72 or i == 77 or i == 87 or i == 92 or i == 102 \
+            or i == 108 or i == 116 or i == 124 or i == 130 or i == 140 or i == 144 or i == 156 or i == 157 \
+            or i == 158:
+        box_color = 1
+        box_broken = 1
+    # box1
+    elif i == 0 or i == 1 or i == 2 or i == 3 or i == 7 or i == 11 or i == 12 or i == 13 or i == 14 \
+            or i == 15 or i == 17 or i == 27 or i == 29 or i == 30 or i == 39 or i == 44 or i == 50 \
+            or i == 54 or i == 59 or i == 60 or i == 64 or i == 71 or i == 74 or i == 80 or i == 85 \
+            or i == 84 or i == 89 or i == 90 or i == 94 or i == 100 or i == 106 or i == 81 or i == 111 \
+            or i == 113 or i == 118 or i == 121 or i == 127 or i == 132 or i == 134 or i == 135 or i == 136 \
+            or i == 138 or i == 142 or i == 148 or i == 151 or i == 153 or i == 161 or i == 163 or i == 169 \
+            or i == 170 or i == 176 or i == 179 or i == 183 or i == 184 or i == 186 or i == 189 or i == 191:
+        box_color = 2
+        box_broken = 1
+    # box2
+    elif i == 31 or i == 35 or i == 43 or i == 45 or i == 49 or i == 51 or i == 52 or i == 53 or i == 55 \
+            or i == 63 or i == 65 or i == 66 or i == 67 or i == 68 or i == 69 or i == 70 or i == 75 \
+            or i == 79 or i == 93 or i == 95 or i == 99 or i == 101 or i == 104 or i == 105 or i == 110 \
+            or i == 83 or i == 114 or i == 119 or i == 120 or i == 122 or i == 126 or i == 128 or i == 133 \
+            or i == 137 or i == 146 or i == 147 or i == 149 or i == 150 or i == 154 or i == 160 or i == 164 \
+            or i == 165 or i == 168 or i == 174 or i == 175 or i == 180 or i == 185 or i == 187 or i == 188 \
+            or i == 190 or i == 194:
+        box_color = 3
+        box_broken = 1
+    # no broken1
+    elif i == 82 or i == 96 or i == 97 or i == 98 or i == 112:
+        box_color = 4
+        box_broken = 1
+    # no broken2
+    elif i == 16 or i == 28 or i == 166 or i == 178:
+        box_color = 5
+        box_broken = 1
+    else:
+        box_color = 0
+        box_broken = 0
+    stage2_block_state.append(box_color)
+    stage2_block_broken.append(box_broken)
+    stage2_block_x.append(block_x)
+    stage2_block_y.append(block_y)
+    block_x += 40.2
+
 while running:
 
     if stage == 0:
@@ -183,7 +273,7 @@ while running:
     elif stage == 1:
         make_stage1()
     elif stage == 2:
-        stage2_map.draw(WIDTH // 2, HEIGHT // 2)
+        make_stage2()
 
     handle_events()
     # frame = (frame + 1) % 8
