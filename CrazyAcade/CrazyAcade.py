@@ -1,6 +1,57 @@
 from pico2d import *
+import random
 
 WIDTH, HEIGHT = 800, 600
+
+
+class Bazzi:
+    global bazzi_dir
+    global bazzi_running
+    global bazzi_dir_x, bazzi_dir_y
+
+    def __init__(self):
+        self.x, self.y = 400, 400
+        self.frame_x, self.frame_y = 0, 0
+        self.image = load_image('Character1_edit.png')
+
+    def update(self):
+        if bazzi_dir == 1:
+            self.frame_x = (self.frame_x + 1) % 4
+            self.frame_y = 350
+        elif bazzi_dir == 2:
+            self.frame_x = (self.frame_x + 1) % 4
+            self.frame_y = 280
+        elif bazzi_dir == 3:
+            self.frame_x = (self.frame_x + 1) % 5
+            self.frame_y = 490
+        elif bazzi_dir == 4:
+            self.frame_x = (self.frame_x + 1) % 5
+            self.frame_y = 420
+
+        self.x += bazzi_dir_x * 8
+        self.y += bazzi_dir_y * 8
+
+    def draw(self):
+        self.image.clip_draw(self.frame_x * 70, self.frame_y, 70, 70, self.x, self.y)
+
+
+class Bubble:
+    def __init__(self):
+        self.time, self.state = 0, 0
+        self.frame = 0
+        self.x, self.y = 9999, 9999
+        self.image = load_image('Bubble.png')
+
+    def update(self):
+        if self.state == 1:
+            #if self.state == 2000:
+                #self.frame = (self.frame + 1) % 3
+            self.time += 1
+        if self.time == 10000:
+            self.state = 2
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 50, 0, 40, 40, self.x, self.y + 5)
 
 
 def handle_events():
@@ -35,6 +86,9 @@ def handle_events():
                 bazzi_dir = 4
                 bazzi_dir_y -= 1
 
+            elif event.key == SDLK_k:
+                makeBubble(bazzi.x, bazzi.y)
+
             elif event.key == SDLK_ESCAPE:
                 running = False
 
@@ -51,36 +105,40 @@ def handle_events():
     pass
 
 
-class Bazzi:
-    global bazzi_dir
-    global bazzi_running
-    global bazzi_dir_x, bazzi_dir_y
+def makeBubble(x, y):
+    global stage2_block_state, stage2_block_x, stage2_block_y
+    global stage1_block_state, stage1_block_x, stage1_block_y
+    global stage
+    global bubble_team
 
-    def __init__(self):
-        self.x, self.y = 400, 400
-        self.frame_x, self.frame_y = 0, 0
-        self.image = load_image('Character1_edit.png')
+    if stage == 1:
+        for i in range(195):
+            if stage1_block_x[i] <= x < stage1_block_x[i] + 40.2:
+                if stage1_block_y[i] <= y < stage1_block_y[i] + 40:
+                    if stage1_block_state[i] == 0:
+                        stage1_block_state[i] = 8
+                        for k in range(100):
+                            if bubble_team[k].state == 0:
+                                bubble_team[k].state = 1
+                                bubble_team[k].x = stage1_block_x[i]
+                                bubble_team[k].y = stage1_block_y[i]
+                                break
+                    else:
+                        break
 
-    def update(self):
-        if bazzi_dir == 1:
-            self.frame_x = (self.frame_x + 1) % 4
-            self.frame_y = 350
-        elif bazzi_dir == 2:
-            self.frame_x = (self.frame_x + 1) % 4
-            self.frame_y = 280
-        elif bazzi_dir == 3:
-            self.frame_x = (self.frame_x + 1) % 5
-            self.frame_y = 490
-        elif bazzi_dir == 4:
-            self.frame_x = (self.frame_x + 1) % 5
-            self.frame_y = 420
-
-        self.x += bazzi_dir_x * 8
-        self.y += bazzi_dir_y * 8
-
-    def draw(self):
-        self.image.clip_draw(self.frame_x * 70, self.frame_y , 70, 70, self.x, self.y)
-
+    else:
+        for i in range(195):
+            if stage2_block_x[i] <= x < stage2_block_x[i] + 40.2:
+                if stage2_block_y[i] <= y < stage2_block_y[i] + 40:
+                    if stage2_block_state[i] == 0:
+                        stage2_block_state[i] = 8
+                        for k in range(100):
+                            if bubble_team[k].state == 0:
+                                bubble_team[k].state = 1
+                                bubble_team[k].x = stage2_block_x[i]
+                                bubble_team[k].y = stage2_block_y[i]
+                    else:
+                        break
 
 
 def make_menu():
@@ -101,8 +159,10 @@ def make_stage1():
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_tree
     global stage1_house1, stage1_house2, stage1_house3
     global box_frame_x, box_frame_y
-    global bazzi
+    global bazzi, bubble_team
 
+    for bubble in bubble_team:
+        bubble.update()
     bazzi.update()
     clear_canvas()
 
@@ -116,6 +176,7 @@ def make_stage1():
     # 5: yellow house
     # 6: blue house
     # 7: tree
+    # 8: bubble
     # x 80.4 , y 81
     for n in range(195):
         if stage1_block_state[n] == 1:
@@ -133,6 +194,8 @@ def make_stage1():
         elif stage1_block_state[n] == 7:
             stage1_tree.clip_draw(0, 0, 40, 70, stage1_block_x[n], stage1_block_y[n] + 12)
 
+    for bubble in bubble_team:
+        bubble.draw()
     bazzi.draw()
 
     update_canvas()
@@ -177,7 +240,6 @@ game_start = load_image('Game_start.png')
 out = load_image('InGame_Button_Out.png')
 game_frame = 0
 
-
 stage1_map = load_image('Stage1.png')
 stage1_box1 = load_image('vilige_Box_0_M1.png')
 stage1_box2 = load_image('vilige_Box_1_M1.png')
@@ -194,8 +256,6 @@ stage2_box3 = load_image('pirate_Box_2.png')
 stage2_box4 = load_image('pirate_Box_3.png')
 stage2_box5 = load_image('pirate_Box_4.png')
 
-#bazzi = load_image('Character1_edit.png')
-
 running = True
 stage = 2
 bazzi = Bazzi()
@@ -203,6 +263,8 @@ bazzi_dir = 0
 bazzi_dir_x = 0
 bazzi_dir_y = 0
 bazzi_running = False
+
+bubble_team = [Bubble() for i in range(100)]
 
 box_frame_x, box_frame_y = 0, 2
 
@@ -333,7 +395,6 @@ while running:
     if stage == 0:
         make_menu()
         delay(0.2)
-    # bazzi.clip_draw(bazzi_frame_x * 100, bazzi_frame_y * 119, 60, 60, bazzi_x, 90)
     elif stage == 1:
         make_stage1()
         delay(0.01)
@@ -342,7 +403,5 @@ while running:
         delay(0.01)
 
     handle_events()
-    # frame = (frame + 1) % 8
-    # bazzi_x += dir * 15
 
 close_canvas()
