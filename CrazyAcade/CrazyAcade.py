@@ -44,14 +44,14 @@ class Bubble:
 
     def update(self):
         if self.state == 1:
-            #if self.state == 2000:
-                #self.frame = (self.frame + 1) % 3
+            #if self.time == 100:
+            self.frame = (self.frame + 1) % 4
             self.time += 1
         if self.time == 10000:
             self.state = 2
 
     def draw(self):
-        self.image.clip_draw(self.frame * 50, 0, 40, 40, self.x, self.y + 5)
+        self.image.clip_draw(self.frame * 40, 0, 40, 40, self.x, self.y + 5)
 
 
 def handle_events():
@@ -113,7 +113,7 @@ def makeBubble(x, y):
 
     if stage == 1:
         for i in range(195):
-            if stage1_block_x[i] <= x < stage1_block_x[i] + 40.2:
+            if stage1_block_x[i] <= x + 20.1 < stage1_block_x[i] + 40.2:
                 if stage1_block_y[i] <= y < stage1_block_y[i] + 40:
                     if stage1_block_state[i] == 0:
                         stage1_block_state[i] = 8
