@@ -107,26 +107,26 @@ def enter():
             box_broken = 1
         # box1
         elif i == 0 or i == 1 or i == 2 or i == 3 or i == 7 or i == 11 or i == 12 or i == 13 or i == 14 \
-                or i == 15 or i == 17 or i == 27 or i == 29 or i == 30 or i == 39 or i == 44 or i == 50 \
-                or i == 54 or i == 59 or i == 60 or i == 64 or i == 71 or i == 74 or i == 80 or i == 85 \
-                or i == 84 or i == 89 or i == 90 or i == 94 or i == 100 or i == 106 or i == 81 or i == 111 \
-                or i == 113 or i == 118 or i == 121 or i == 127 or i == 132 or i == 134 or i == 135 or i == 136 \
-                or i == 138 or i == 142 or i == 148 or i == 151 or i == 153 or i == 161 or i == 163 or i == 169 \
+                or i == 15 or i == 17 or i == 27 or i == 29 or i == 30 or i == 44 \
+                or i == 59 or i == 60 or i == 74 or i == 80 or i == 85 \
+                or i == 84 or i == 86 or i == 89 or i == 90 or i == 106 \
+                or i == 118 or i == 121 or i == 132 or i == 134 or i == 135 or i == 136 \
+                or i == 138 or i == 148 or i == 151 or i == 153 or i == 161 or i == 163 or i == 169 \
                 or i == 170 or i == 176 or i == 179 or i == 183 or i == 184 or i == 186 or i == 189 or i == 191:
             box_color = 2
             box_broken = 1
         # box2
-        elif i == 31 or i == 35 or i == 43 or i == 45 or i == 49 or i == 51 or i == 52 or i == 53 or i == 55 \
-                or i == 63 or i == 65 or i == 66 or i == 67 or i == 68 or i == 69 or i == 70 or i == 75 \
-                or i == 79 or i == 93 or i == 95 or i == 99 or i == 101 or i == 104 or i == 105 or i == 110 \
-                or i == 83 or i == 114 or i == 119 or i == 120 or i == 122 or i == 126 or i == 128 or i == 133 \
-                or i == 137 or i == 146 or i == 147 or i == 149 or i == 150 or i == 154 or i == 160 or i == 164 \
+        elif i == 31 or i == 43 or i == 45 or i == 52 \
+                or i == 75 or i == 78 \
+                or i == 79 or i == 104 or i == 105 or i == 112\
+                or i == 119 or i == 120 or i == 122 or i == 127 or i == 133 \
+                or i == 137 or i == 142 or i == 146 or i == 147 or i == 149 or i == 150 or i == 154 or i == 160 or i == 164 \
                 or i == 165 or i == 168 or i == 174 or i == 175 or i == 180 or i == 185 or i == 187 or i == 188 \
                 or i == 190 or i == 194:
             box_color = 3
             box_broken = 1
         # no broken1
-        elif i == 82 or i == 96 or i == 97 or i == 98 or i == 112:
+        elif i == 67 or i == 81 or i == 82 or i == 83 or i == 97:
             box_color = 4
             box_broken = 1
         # no broken2
@@ -172,6 +172,7 @@ def update():
     for bubble in bubble_team:
         bubble.update()
     bazzi.update()
+    delay(0.008)
     pass
 
 
