@@ -123,14 +123,14 @@ def enter():
             box_color = 2
             box_broken = 1
         # box
-        elif n == 5 or n == 8 or n == 9 or n == 17 or n == 19 or n == 21 or n == 35 or n == 37 \
-                or n == 38 or n == 39 or n == 41 or n == 43 or n == 45 or n == 47 or n == 49 \
-                or n == 51 or n == 65 or n == 68 or n == 69 or n == 71 or n == 73 or n == 81 \
-                or n == 82 or n == 91 or n == 93 or n == 95 or n == 98 or n == 99 or n == 101 \
-                or n == 103 or n == 111 or n == 121 or n == 123 or n == 125 or n == 127 or n == 128 \
-                or n == 129 or n == 141 or n == 145 or n == 147 or n == 149 or n == 153 or n == 155 \
-                or n == 158 or n == 159 or n == 171 or n == 172 or n == 175 or n == 177 or n == 185 \
-                or n == 188 or n == 189:
+        elif n == 5 or n == 9 or n == 17 or n == 19 or n == 35 \
+                or n == 39 or n == 41 or n == 43 or n == 45 or n == 47 or n == 49 \
+                or n == 65 or n == 66 or n == 67 or n == 68 or n == 69 or n == 71 or n == 73 \
+                or n == 91 or n == 93 or n == 95 or n == 99 or n == 101 \
+                or n == 103 or n == 121 or n == 123 or n == 125 or n == 126 or n == 127 or n == 128 \
+                or n == 129 or n == 145 or n == 147 or n == 149 or n == 153 or n == 155 \
+                or n == 159 or n == 175 or n == 177 or n == 185 \
+                or n == 189:
             box_color = 3
             box_broken = 1
         # red box
@@ -193,6 +193,7 @@ def update():
     for bubble in bubble_team:
         bubble.update()
     bazzi.update()
+    delay(0.008)
     pass
 
 

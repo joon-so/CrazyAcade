@@ -30,7 +30,7 @@ def exit():
 def update():
     global game_frame
     game_frame = (game_frame + 1) % 2
-    delay(0.1)
+    delay(0.2)
     pass
 
 
