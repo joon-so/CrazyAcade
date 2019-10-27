@@ -19,6 +19,8 @@ bazzi_dir_x = 0
 bazzi_dir_y = 0
 bazzi_running = False
 
+monster_team = None
+
 bubble_team = None
 
 box_frame_x, box_frame_y = 0, 2
@@ -86,9 +88,43 @@ class Bubble:
         self.image.clip_draw(self.frame * 40, 0, 40, 40, self.x, self.y + 5)
 
 
+class Monster:
+    def __init__(self):
+        self.x, self.y = 200, 200
+        self.frame_x, self.frame_y = 1, 0
+        self.dir = 1
+        self.timer = 0
+        self.image = load_image('Monster_Basic.png')
+
+    def update(self):
+        self.timer += 1
+        if self.timer == 2:
+            if self.dir == 1:
+                self.frame_y = 170
+                self.y -= 4
+            elif self.dir == 2:
+                self.frame_y = 136
+                self.x -= 4
+            elif self.dir == 3:
+                self.frame_y = 102
+                self.x += 4
+            elif self.dir == 4:
+                self.frame_y = 68
+                self.y += 4
+
+            if self.frame_x == 1:
+                self.frame_x = 0
+            else:
+                self.frame_x = 1
+            self.timer = 0
+
+    def draw(self):
+        self.image.clip_draw(self.frame_x * 34, self.frame_y, 34, 34, self.x, self.y)
+
+
 def enter():
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_house1, stage1_house2, stage1_house3, stage1_tree
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
     global block_x, block_y, box_color, box_broken
     global stage1_block_state, stage1_block_broken, stage1_block_x, stage1_block_y
 
@@ -102,6 +138,17 @@ def enter():
     stage1_tree = load_image('vilige_Tree.png')
 
     bazzi = Bazzi()
+
+    monster_team = [Monster() for i in range(5)]
+    monster_team[0].x, monster_team[0].y = 280, 500
+    monster_team[1].x, monster_team[1].y = 350, 300
+    monster_team[1].dir = 4
+    monster_team[2].x, monster_team[2].y = 300, 100
+    monster_team[2].dir = 3
+    monster_team[3].x, monster_team[3].y = 80, 150
+    monster_team[4].x, monster_team[4].y = 600, 510
+    monster_team[4].dir = 2
+
     bubble_team = [Bubble() for i in range(100)]
 
     for n in range(195):
@@ -123,14 +170,13 @@ def enter():
             box_color = 2
             box_broken = 1
         # box
-        elif n == 5 or n == 9 or n == 17 or n == 19 or n == 35 \
-                or n == 39 or n == 41 or n == 43 or n == 45 or n == 47 or n == 49 \
-                or n == 65 or n == 66 or n == 67 or n == 68 or n == 69 or n == 71 or n == 73 \
-                or n == 91 or n == 93 or n == 95 or n == 99 or n == 101 \
-                or n == 103 or n == 121 or n == 123 or n == 125 or n == 126 or n == 127 or n == 128 \
-                or n == 129 or n == 145 or n == 147 or n == 149 or n == 153 or n == 155 \
-                or n == 159 or n == 175 or n == 177 or n == 185 \
-                or n == 189:
+        elif n == 5 or n == 9 or n == 17 or n == 19 or n == 35 or n == 39 or n == 41 \
+                or n == 43 or n == 45 or n == 47 or n == 49 or n == 65 or n == 66 or n == 67 \
+                or n == 68 or n == 69 or n == 71 or n == 73 or n == 91 or n == 93 or n == 95 \
+                or n == 99 or n == 101 or n == 103 or n == 121 or n == 123 or n == 125 \
+                or n == 126 or n == 127 or n == 128 or n == 129 or n == 145 or n == 147 \
+                or n == 149 or n == 153 or n == 155 or n == 159 or n == 175 or n == 177 \
+                or n == 185 or n == 189:
             box_color = 3
             box_broken = 1
         # red box
@@ -188,10 +234,12 @@ def exit():
 
 
 def update():
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
 
     for bubble in bubble_team:
         bubble.update()
+    for monster in monster_team:
+        monster.update()
     bazzi.update()
     delay(0.008)
     pass
@@ -202,7 +250,7 @@ def draw():
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_tree
     global stage1_house1, stage1_house2, stage1_house3
     global box_frame_x, box_frame_y
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
 
     clear_canvas()
     stage1_map.draw(WIDTH // 2, HEIGHT // 2)
@@ -235,7 +283,10 @@ def draw():
 
     for bubble in bubble_team:
         bubble.draw()
+    for monster in monster_team:
+        monster.draw()
     bazzi.draw()
+
     update_canvas()
     pass
 
