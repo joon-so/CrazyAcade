@@ -17,6 +17,7 @@ bazzi_dir_x = 0
 bazzi_dir_y = 0
 bazzi_running = False
 
+monster_team = None
 bubble_team = None
 
 box_frame_x, box_frame_y = 0, 2
@@ -61,6 +62,40 @@ class Bazzi:
         self.image.clip_draw(self.frame_x * 70, self.frame_y, 70, 70, self.x, self.y)
 
 
+class Monster:
+    def __init__(self):
+        self.x, self.y = 200, 200
+        self.frame_x, self.frame_y = 1, 0
+        self.dir = 1
+        self.timer = 0
+        self.image = load_image('Monster_Normal.png')
+
+    def update(self):
+        self.timer += 1
+        if self.timer == 2:
+            if self.dir == 1:
+                self.frame_y = 195
+                self.y -= 4
+            elif self.dir == 2:
+                self.frame_y = 156
+                self.x -= 4
+            elif self.dir == 3:
+                self.frame_y = 117
+                self.x += 4
+            elif self.dir == 4:
+                self.frame_y = 78
+                self.y += 4
+
+            if self.frame_x == 1:
+                self.frame_x = 0
+            else:
+                self.frame_x = 1
+            self.timer = 0
+
+    def draw(self):
+        self.image.clip_draw(self.frame_x * 41, self.frame_y, 41, 39, self.x, self.y)
+
+
 class Bubble:
     def __init__(self):
         self.time, self.state = 0, 0
@@ -82,7 +117,7 @@ class Bubble:
 
 def enter():
     global stage2_map, stage2_box1, stage2_box2, stage2_box3, stage2_box4, stage2_box5
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
     global block_y, block_x, stage2_block_state, stage2_block_broken, stage2_block_x, stage2_block_y
 
     stage2_map = load_image('Stage2.png')
@@ -93,6 +128,14 @@ def enter():
     stage2_box5 = load_image('pirate_Box_4.png')
     bazzi = Bazzi()
     bubble_team = [Bubble() for i in range(100)]
+    monster_team = [Monster() for i in range(4)]
+    monster_team[0].x, monster_team[0].y = 200, 395
+    monster_team[0].dir = 3
+    monster_team[1].x, monster_team[1].y = 282, 200
+    monster_team[1].dir = 4
+    monster_team[2].x, monster_team[2].y = 480, 310
+    monster_team[2].dir = 2
+    monster_team[3].x, monster_team[3].y = 362, 480
 
     for i in range(195):
         if block_x > 610:
@@ -146,7 +189,7 @@ def enter():
 
 def exit():
     global stage2_map, stage2_box1, stage2_box2, stage2_box3, stage2_box4, stage2_box5
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
     global block_y, block_x, stage2_block_state, stage2_block_broken, stage2_block_x, stage2_block_y
 
     del(stage2_map)
@@ -157,6 +200,7 @@ def exit():
     del(stage2_box5)
     del(bazzi)
     del(bubble_team)
+    del(monster_team)
     del(block_x)
     del(block_y)
     del(stage2_block_state)
@@ -167,10 +211,12 @@ def exit():
 
 
 def update():
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
 
     for bubble in bubble_team:
         bubble.update()
+    for monster in monster_team:
+        monster.update()
     bazzi.update()
     delay(0.008)
     pass
@@ -206,6 +252,8 @@ def draw():
 
     for bubble in bubble_team:
         bubble.draw()
+    for monster in monster_team:
+        monster.draw()
     bazzi.draw()
 
     update_canvas()
@@ -216,8 +264,8 @@ def makeBubble(x, y):
     global stage2_block_state, stage2_block_x, stage2_block_y
     global bubble_team
 
-    for i in range(195):
-        if stage2_block_x[i] <= x < stage2_block_x[i] + 40.2:
+    for i in range(100):
+        if stage2_block_x[i] <= x + 20.1 < stage2_block_x[i] + 40.2:
             if stage2_block_y[i] <= y < stage2_block_y[i] + 40:
                 if stage2_block_state[i] == 0:
                     stage2_block_state[i] = 8

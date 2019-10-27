@@ -214,7 +214,7 @@ def enter():
 def exit():
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_house1, stage1_house2, stage1_house3, stage1_tree
     global stage1_block_state, stage1_block_broken, stage1_block_x, stage1_block_y
-    global bazzi, bubble_team
+    global bazzi, bubble_team, monster_team
     del(stage1_map)
     del(stage1_box1)
     del(stage1_box2)
@@ -230,6 +230,7 @@ def exit():
 
     del(bazzi)
     del(bubble_team)
+    del(monster_team)
     pass
 
 
@@ -341,7 +342,7 @@ def makeBubble(x, y):
     global stage
     global bubble_team
 
-    for i in range(195):
+    for i in range(100):
         if stage1_block_x[i] <= x + 20.1 < stage1_block_x[i] + 40.2:
             if stage1_block_y[i] <= y < stage1_block_y[i] + 40:
                 if stage1_block_state[i] == 0:
