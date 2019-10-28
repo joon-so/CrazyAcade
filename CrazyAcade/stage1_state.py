@@ -149,7 +149,7 @@ def enter():
     monster_team[4].x, monster_team[4].y = 600, 510
     monster_team[4].dir = 2
 
-    bubble_team = [Bubble() for i in range(100)]
+    bubble_team = [Bubble() for i in range(195)]
 
     for n in range(195):
         if block_x > 610:
@@ -342,12 +342,12 @@ def makeBubble(x, y):
     global stage
     global bubble_team
 
-    for i in range(100):
+    for i in range(195):
         if stage1_block_x[i] <= x + 20.1 < stage1_block_x[i] + 40.2:
             if stage1_block_y[i] <= y < stage1_block_y[i] + 40:
                 if stage1_block_state[i] == 0:
                     stage1_block_state[i] = 8
-                    for k in range(100):
+                    for k in range(195):
                         if bubble_team[k].state == 0:
                             bubble_team[k].state = 1
                             bubble_team[k].x = stage1_block_x[i]

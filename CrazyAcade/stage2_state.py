@@ -128,7 +128,7 @@ def enter():
     stage2_box4 = load_image('pirate_Box_3.png')
     stage2_box5 = load_image('pirate_Box_4.png')
     bazzi = Bazzi()
-    bubble_team = [Bubble() for i in range(100)]
+    bubble_team = [Bubble() for i in range(195)]
     monster_team = [Monster() for i in range(4)]
     monster_team[0].x, monster_team[0].y = 200, 395
     monster_team[0].dir = 3
@@ -263,18 +263,20 @@ def draw():
 
 def makeBubble(x, y):
     global stage2_block_state, stage2_block_x, stage2_block_y
+    global stage
     global bubble_team
 
-    for i in range(100):
+    for i in range(195):
         if stage2_block_x[i] <= x + 20.1 < stage2_block_x[i] + 40.2:
             if stage2_block_y[i] <= y < stage2_block_y[i] + 40:
                 if stage2_block_state[i] == 0:
                     stage2_block_state[i] = 8
-                    for k in range(100):
+                    for k in range(195):
                         if bubble_team[k].state == 0:
                             bubble_team[k].state = 1
                             bubble_team[k].x = stage2_block_x[i]
                             bubble_team[k].y = stage2_block_y[i]
+                            break
                 else:
                     break
 
