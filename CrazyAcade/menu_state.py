@@ -1,27 +1,25 @@
 import game_framework
 import stage1_state
+import help_state
 from pico2d import *
 
 WIDTH, HEIGHT = 800, 600
 game_frame = 0
 menu = None
-Help = None
 game_start = None
 out = None
 
 def enter():
-    global menu, Help, game_start, out
+    global menu, game_start, out
     menu = load_image('Main.png')
-    Help = load_image('Help_key.png')
     game_start = load_image('Game_start.png')
     out = load_image('InGame_Button_Out.png')
     pass
 
 
 def exit():
-    global menu, Help, game_start, out
+    global menu, game_start, out
     del(menu)
-    del(Help)
     del(game_start)
     del(out)
     pass
@@ -35,7 +33,7 @@ def update():
 
 
 def draw():
-    global menu, Help, game_start, out
+    global menu, game_start, out
     global game_frame, WIDTH, HEIGHT
     clear_canvas()
 
@@ -62,4 +60,6 @@ def handle_events():
                 game_framework.quit()
             elif event.key == SDLK_1:
                 game_framework.change_state(stage1_state)
+            elif event.key == SDLK_h:
+                game_framework.push_state(help_state)
     pass

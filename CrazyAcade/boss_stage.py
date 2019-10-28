@@ -91,11 +91,13 @@ class Monster:
 
 
 class Bubble:
+    image = None
     def __init__(self):
         self.time, self.state = 0, 0
         self.frame = 0
         self.x, self.y = 9999, 9999
-        self.image = load_image('Bubble.png')
+        if Bubble.image == None:
+            Bubble.image = load_image('Bubble.png')
 
     def update(self):
         if self.state == 1:
@@ -237,33 +239,33 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 bazzi_dir = 1
                 bazzi_dir_x += 1
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 bazzi_dir = 2
                 bazzi_dir_x -= 1
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 bazzi_dir = 3
                 bazzi_dir_y += 1
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 bazzi_dir = 4
                 bazzi_dir_y -= 1
 
-            elif event.key == SDLK_k:
+            elif event.key == SDLK_g:
                 makeBubble(bazzi.x, bazzi.y)
 
             elif event.key == SDLK_ESCAPE:
                 game_framework.quit()
 
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_RIGHT:
+            if event.key == SDLK_d:
                 bazzi_dir_x -= 1
-            elif event.key == SDLK_LEFT:
+            elif event.key == SDLK_a:
                 bazzi_dir_x += 1
-            elif event.key == SDLK_UP:
+            elif event.key == SDLK_w:
                 bazzi_dir_y -= 1
-            elif event.key == SDLK_DOWN:
+            elif event.key == SDLK_s:
                 bazzi_dir_y += 1
             bazzi_dir = 0
     pass
