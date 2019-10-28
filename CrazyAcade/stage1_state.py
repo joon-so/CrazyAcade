@@ -101,16 +101,16 @@ class Monster:
         if self.timer == 2:
             if self.dir == 1:
                 self.frame_y = 170
-                self.y -= 4
+                self.y -= 1
             elif self.dir == 2:
                 self.frame_y = 136
-                self.x -= 4
+                self.x -= 1
             elif self.dir == 3:
                 self.frame_y = 102
-                self.x += 4
+                self.x += 1
             elif self.dir == 4:
                 self.frame_y = 68
-                self.y += 4
+                self.y += 1
 
             if self.frame_x == 1:
                 self.frame_x = 0
