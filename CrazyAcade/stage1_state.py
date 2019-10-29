@@ -244,7 +244,7 @@ def update():
     for monster in monster_team:
         monster.update()
     bazzi.update()
-    delay(0.008)
+    delay(0.03)
     pass
 
 
