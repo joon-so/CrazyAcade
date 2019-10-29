@@ -38,8 +38,8 @@ class Bazzi:
     global bazzi_dir_x, bazzi_dir_y
 
     def __init__(self):
-        self.x, self.y = 400, 400
-        self.frame_x, self.frame_y = 0, 0
+        self.x, self.y = 80, 80
+        self.frame_x, self.frame_y = 0, 420
         self.image = load_image('Character1_edit.png')
 
     def update(self):
