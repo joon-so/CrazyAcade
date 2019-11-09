@@ -1,4 +1,5 @@
 import game_framework
+import game_world
 from pico2d import *
 
 WIDTH, HEIGHT = 800, 600

@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 import boss_stage
+import game_world
 
 WIDTH, HEIGHT = 800, 600
 stage2_map = None
