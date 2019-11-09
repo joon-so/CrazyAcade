@@ -1,23 +1,56 @@
 from pico2d import *
 import game_world
 
+BUBBLE_TIMER = range(1)
+
+class IdleState():
+    @staticmethod
+    def enter(bubble, event):
+        bubble.timer = 50
+        pass
+
+    @staticmethod
+    def exit(bubble, event):
+        pass
+
+    @staticmethod
+    def do(bubble):
+        bubble.frame = (bubble.frame + 1) % 4
+        bubble.timer -= 1
+        if bubble.timer == 0:
+            bubble.add_event(BUBBLE_TIMER)
+
+    @staticmethod
+    def draw(bubble):
+        bubble.image.clip_draw(bubble.frame * 40, 0, 40, 40, bubble.x, bubble.y - 7)
+    pass
+
+
+class PopState():
+    pass
+
+
+next_state_table = {
+    IdleState: {BUBBLE_TIMER: PopState}
+}
+
 
 class Bubble:
     image = None
-    def __init__(self):
-        self.time, self.state = 0, 0
+    def __init__(self, x = 9999, y = 9999):
+        self.timer = 0
         self.frame = 0
-        self.x, self.y = 9999, 9999
+        self.x, self.y = x, y
+        self.cur_state = IdleState
         if Bubble.image == None:
             Bubble.image = load_image('resource/Bubble.png')
 
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
     def update(self):
-        if self.state == 1:
-            # if self.time == 100:
-            self.frame = (self.frame + 1) % 4
-            self.time += 1
-        if self.time == 10000:
-            self.state = 2
+        self.cur_state.do(self)
 
     def draw(self):
-        self.image.clip_draw(self.frame * 40, 0, 40, 40, self.x, self.y + 5)
+        self.cur_state.draw(self)
+        #bubble delete

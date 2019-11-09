@@ -4,6 +4,8 @@ import random
 import game_world
 from pico2d import *
 
+from bazzi import Bazzi
+
 WIDTH, HEIGHT = 800, 600
 stage1_map = None
 stage1_box1 = None
@@ -14,10 +16,9 @@ stage1_house2 = None
 stage1_house3 = None
 stage1_tree = None
 running = True
+
 bazzi = None
-bazzi_dir = 0
-bazzi_dir_x = 0
-bazzi_dir_y = 0
+
 bazzi_running = False
 
 monster_team = None
@@ -37,37 +38,6 @@ stage1_block_state = []
 stage1_block_broken = []
 stage1_block_x = []
 stage1_block_y = []
-
-
-class Bazzi:
-    global bazzi_dir
-    global bazzi_running
-    global bazzi_dir_x, bazzi_dir_y
-
-    def __init__(self):
-        self.x, self.y = 40, 560
-        self.frame_x, self.frame_y = 0, 420
-        self.image = load_image('resource/Character1_edit.png')
-
-    def update(self):
-        if bazzi_dir == 1:
-            self.frame_x = (self.frame_x + 1) % 4
-            self.frame_y = 350
-        elif bazzi_dir == 2:
-            self.frame_x = (self.frame_x + 1) % 4
-            self.frame_y = 280
-        elif bazzi_dir == 3:
-            self.frame_x = (self.frame_x + 1) % 5
-            self.frame_y = 490
-        elif bazzi_dir == 4:
-            self.frame_x = (self.frame_x + 1) % 5
-            self.frame_y = 420
-
-        self.x += bazzi_dir_x * 8
-        self.y += bazzi_dir_y * 8
-
-    def draw(self):
-        self.image.clip_draw(self.frame_x * 70, self.frame_y, 70, 70, self.x, self.y)
 
 
 class Bubble:
@@ -141,6 +111,7 @@ def enter():
     stage1_tree = load_image('resource/vilige_Tree.png')
 
     bazzi = Bazzi()
+    game_world.add_object(bazzi, 0)
 
     monster_team = [Monster() for i in range(5)]
     monster_team[0].x, monster_team[0].y = 280, 500
@@ -234,6 +205,8 @@ def exit():
     del(bazzi)
     del(bubble_team)
     del(monster_team)
+
+    game_world.clear()
     pass
 
 
@@ -245,6 +218,8 @@ def update():
     for monster in monster_team:
         monster.update()
     bazzi.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
     delay(0.03)
     pass
 
@@ -254,13 +229,13 @@ def draw():
     global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_tree
     global stage1_house1, stage1_house2, stage1_house3
     global box_frame_x, box_frame_y
-    global bazzi, bubble_team, monster_team
+    global bubble_team, monster_team
 
     clear_canvas()
     stage1_map.draw(WIDTH // 2, HEIGHT // 2)
     # stage1_block_state
     # 0: NULL
-    # 1: red block
+    # 1: red blockd
     # 2: yellow block
     # 3: box
     # 4: red house
@@ -289,55 +264,20 @@ def draw():
         bubble.draw()
     for monster in monster_team:
         monster.draw()
-    bazzi.draw()
 
+    bazzi.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
-    pass
 
 
 def handle_events():
-    global running
-    global bazzi_dir, bazzi_dir_x, bazzi_dir_y
-    global bazzi_running
-    global stage
-    global bazzi
-
     events = get_events()
     for event in events:
-        if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_2:
-                game_framework.change_state(stage2_state)
-
-            elif event.key == SDLK_d:
-                bazzi_dir = 1
-                bazzi_dir_x += 1
-            elif event.key == SDLK_a:
-                bazzi_dir = 2
-                bazzi_dir_x -= 1
-            elif event.key == SDLK_w:
-                bazzi_dir = 3
-                bazzi_dir_y += 1
-            elif event.key == SDLK_s:
-                bazzi_dir = 4
-                bazzi_dir_y -= 1
-
-            elif event.key == SDLK_g:
-                makeBubble(bazzi.x, bazzi.y)
-
-            elif event.key == SDLK_ESCAPE:
-                game_framework.quit()
-
-        elif event.type == SDL_KEYUP:
-            if event.key == SDLK_d:
-                bazzi_dir_x -= 1
-            elif event.key == SDLK_a:
-                bazzi_dir_x += 1
-            elif event.key == SDLK_w:
-                bazzi_dir_y -= 1
-            elif event.key == SDLK_s:
-                bazzi_dir_y += 1
-            bazzi_dir = 0
-    pass
+        if event.type == SDLK_2:
+            game_framework.change_state(stage2_state)
+        else:
+            bazzi.handle_event(event)
 
 
 def makeBubble(x, y):

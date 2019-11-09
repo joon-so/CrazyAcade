@@ -1,4 +1,6 @@
 from pico2d import *
+from bubble import Bubble
+
 import game_world
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, G, H = range(10)
@@ -15,8 +17,6 @@ key_event_table = {
     (SDL_KEYDOWN, SDLK_g): G,
     (SDL_KEYDOWN, SDLK_h): H
 }
-
-bazzi_running = False
 
 
 class IdleState():
@@ -42,6 +42,8 @@ class IdleState():
 
     @staticmethod
     def exit(bazzi, event):
+        if event == G:
+            bazzi.make_bubble()
         pass
 
     @staticmethod
@@ -88,6 +90,8 @@ class RunState():
 
     @staticmethod
     def exit(bazzi, event):
+        if event == G:
+            bazzi.make_bubble()
         pass
 
     @staticmethod
@@ -99,10 +103,10 @@ class RunState():
             bazzi.frame_x = (bazzi.frame_x + 1) % 4
             bazzi.frame_y = 280
         elif bazzi.bazzi_dir == 3:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4 + 1
+            bazzi.frame_x = (bazzi.frame_x + 1) % 4
             bazzi.frame_y = 490
         elif bazzi.bazzi_dir == 4:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4 + 1
+            bazzi.frame_x = (bazzi.frame_x + 1) % 4
             bazzi.frame_y = 420
 
         bazzi.x += bazzi.bazzi_dir_x * 8
@@ -120,12 +124,12 @@ class DeathState():
 
 
 next_state_table = {
-    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState,
-                RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+    IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, UP_UP: RunState, DOWN_UP: RunState,
+                RIGHT_DOWN: RunState, LEFT_DOWN: RunState, UP_DOWN: RunState, DOWN_DOWN: RunState,
                 G: IdleState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState,
-               LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-               G: RunState },
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
+               LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState,
+               G: RunState}
     #DeathState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState,
                  #LEFT_UP: RunState, RIGHT_UP: RunState,
                  #G: IdleState}
@@ -133,8 +137,6 @@ next_state_table = {
 
 
 class Bazzi:
-    global bazzi_running
-
     def __init__(self):
         self.bazzi_dir = 0
         self.x, self.y = 40, 560
@@ -146,6 +148,12 @@ class Bazzi:
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
 
+    def make_bubble(self):
+        bubble = Bubble(self.x, self.y)
+        game_world.add_object(bubble, 1)
+        print('one two three four bubble bubble')
+        pass
+
     def add_event(self, event):
         self.event_que.insert(0, event)
 
@@ -155,11 +163,12 @@ class Bazzi:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
             self.cur_state = next_state_table[self.cur_state][event]
+            self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
