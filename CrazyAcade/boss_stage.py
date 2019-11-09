@@ -36,7 +36,7 @@ class Bazzi:
     def __init__(self):
         self.x, self.y = 400, 400
         self.frame_x, self.frame_y = 0, 420
-        self.image = load_image('Character1_edit.png')
+        self.image = load_image('resource/Character1_edit.png')
 
     def update(self):
         if bazzi_dir == 1:
@@ -65,7 +65,7 @@ class Monster:
         self.frame_x, self.frame_y = 0, 0
         self.dir = 1
         self.timer = 0
-        self.image = load_image('Monster_Boss.png')
+        self.image = load_image('resource/Monster_Boss.png')
 
     def update(self):
         self.timer += 1
@@ -97,7 +97,7 @@ class Bubble:
         self.frame = 0
         self.x, self.y = 9999, 9999
         if Bubble.image == None:
-            Bubble.image = load_image('Bubble.png')
+            Bubble.image = load_image('resource/Bubble.png')
 
     def update(self):
         if self.state == 1:
@@ -116,9 +116,9 @@ def enter():
     global bazzi, bubble_team, monster
     global block_y, block_x, stage2_block_state, stage2_block_broken, stage2_block_x, stage2_block_y
 
-    stage2_map = load_image('stage2.png')
-    stage2_box4 = load_image('pirate_Box_3.png')
-    stage2_box5 = load_image('pirate_Box_4.png')
+    stage2_map = load_image('resource/stage2.png')
+    stage2_box4 = load_image('resource/pirate_Box_3.png')
+    stage2_box5 = load_image('resource/pirate_Box_4.png')
     bazzi = Bazzi()
 
     bubble_team = [Bubble() for i in range(195)]

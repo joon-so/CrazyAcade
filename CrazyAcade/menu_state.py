@@ -11,9 +11,9 @@ out = None
 
 def enter():
     global menu, game_start, out
-    menu = load_image('Main.png')
-    game_start = load_image('Game_start.png')
-    out = load_image('InGame_Button_Out.png')
+    menu = load_image('resource/Main.png')
+    game_start = load_image('resource/Game_start.png')
+    out = load_image('resource/InGame_Button_Out.png')
     pass
 
 

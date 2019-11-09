@@ -8,7 +8,7 @@ help = None
 
 def enter():
     global help
-    help = load_image('Help_key.png')
+    help = load_image('resource/Help_key.png')
     pass
 
 

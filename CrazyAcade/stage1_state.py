@@ -46,7 +46,7 @@ class Bazzi:
     def __init__(self):
         self.x, self.y = 40, 560
         self.frame_x, self.frame_y = 0, 420
-        self.image = load_image('Character1_edit.png')
+        self.image = load_image('resource/Character1_edit.png')
 
     def update(self):
         if bazzi_dir == 1:
@@ -76,7 +76,7 @@ class Bubble:
         self.frame = 0
         self.x, self.y = 9999, 9999
         if Bubble.image == None:
-            Bubble.image = load_image('Bubble.png')
+            Bubble.image = load_image('resource/Bubble.png')
 
     def update(self):
         if self.state == 1:
@@ -96,7 +96,7 @@ class Monster:
         self.frame_x, self.frame_y = 1, 0
         self.dir = 1
         self.timer = 0
-        self.image = load_image('Monster_Basic.png')
+        self.image = load_image('resource/Monster_Basic.png')
 
     def update(self):
         self.timer += 1
@@ -130,14 +130,14 @@ def enter():
     global block_x, block_y, box_color, box_broken
     global stage1_block_state, stage1_block_broken, stage1_block_x, stage1_block_y
 
-    stage1_map = load_image('Stage1.png')
-    stage1_box1 = load_image('vilige_Box_0_M1.png')
-    stage1_box2 = load_image('vilige_Box_1_M1.png')
-    stage1_box3 = load_image('vilige_Box_2_M1.png')
-    stage1_house1 = load_image('vilige_House_0.png')
-    stage1_house2 = load_image('vilige_House_1.png')
-    stage1_house3 = load_image('vilige_House_2.png')
-    stage1_tree = load_image('vilige_Tree.png')
+    stage1_map = load_image('resource/Stage1.png')
+    stage1_box1 = load_image('resource/vilige_Box_0_M1.png')
+    stage1_box2 = load_image('resource/vilige_Box_1_M1.png')
+    stage1_box3 = load_image('resource/vilige_Box_2_M1.png')
+    stage1_house1 = load_image('resource/vilige_House_0.png')
+    stage1_house2 = load_image('resource/vilige_House_1.png')
+    stage1_house3 = load_image('resource/vilige_House_2.png')
+    stage1_tree = load_image('resource/vilige_Tree.png')
 
     bazzi = Bazzi()
 
