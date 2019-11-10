@@ -274,8 +274,10 @@ def draw():
 def handle_events():
     events = get_events()
     for event in events:
-        if event.type == SDLK_2:
+        if event.key == SDLK_2:
             game_framework.change_state(stage2_state)
+        elif event.key == SDLK_ESCAPE:
+            game_framework.quit()
         else:
             bazzi.handle_event(event)
 

@@ -6,7 +6,6 @@ BUBBLE_TIMER = range(1)
 class IdleState():
     @staticmethod
     def enter(bubble, event):
-        bubble.timer = 50
         pass
 
     @staticmethod
@@ -18,7 +17,8 @@ class IdleState():
         bubble.frame = (bubble.frame + 1) % 4
         bubble.timer -= 1
         if bubble.timer == 0:
-            bubble.add_event(BUBBLE_TIMER)
+            game_world.remove_object(bubble)
+            #bubble.add_event(BUBBLE_TIMER)
 
     @staticmethod
     def draw(bubble):
@@ -37,8 +37,9 @@ next_state_table = {
 
 class Bubble:
     image = None
+
     def __init__(self, x = 9999, y = 9999):
-        self.timer = 0
+        self.timer = 20
         self.frame = 0
         self.x, self.y = x, y
         self.cur_state = IdleState
