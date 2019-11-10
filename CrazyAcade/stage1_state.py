@@ -4,28 +4,21 @@ import random
 import game_world
 from pico2d import *
 
+from stage1_block import Block
 from bazzi import Bazzi
 
 WIDTH, HEIGHT = 800, 600
 stage1_map = None
-stage1_box1 = None
-stage1_box2 = None
-stage1_box3 = None
-stage1_house1 = None
-stage1_house2 = None
-stage1_house3 = None
-stage1_tree = None
 running = True
 
 bazzi = None
+block = None
 
 bazzi_running = False
 
 monster_team = None
 
 bubble_team = None
-
-box_frame_x, box_frame_y = 0, 2
 
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
@@ -34,32 +27,6 @@ box_frame_x, box_frame_y = 0, 2
 block_x, block_y = 39, 540
 box_color = 0
 box_broken = 0
-stage1_block_state = []
-stage1_block_broken = []
-stage1_block_x = []
-stage1_block_y = []
-
-
-class Bubble:
-    image = None
-    def __init__(self):
-        self.time, self.state = 0, 0
-        self.frame = 0
-        self.x, self.y = 9999, 9999
-        if Bubble.image == None:
-            Bubble.image = load_image('resource/Bubble.png')
-
-    def update(self):
-        if self.state == 1:
-            # if self.time == 100:
-            self.frame = (self.frame + 1) % 4
-            self.time += 1
-        if self.time == 10000:
-            self.state = 2
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 40, 0, 40, 40, self.x, self.y + 5)
-
 
 class Monster:
     def __init__(self):
@@ -96,22 +63,11 @@ class Monster:
 
 
 def enter():
-    global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_house1, stage1_house2, stage1_house3, stage1_tree
-    global bazzi, bubble_team, monster_team
+    global stage1_map
+    global bazzi, block, monster_team
     global block_x, block_y, box_color, box_broken
-    global stage1_block_state, stage1_block_broken, stage1_block_x, stage1_block_y
 
     stage1_map = load_image('resource/Stage1.png')
-    stage1_box1 = load_image('resource/vilige_Box_0_M1.png')
-    stage1_box2 = load_image('resource/vilige_Box_1_M1.png')
-    stage1_box3 = load_image('resource/vilige_Box_2_M1.png')
-    stage1_house1 = load_image('resource/vilige_House_0.png')
-    stage1_house2 = load_image('resource/vilige_House_1.png')
-    stage1_house3 = load_image('resource/vilige_House_2.png')
-    stage1_tree = load_image('resource/vilige_Tree.png')
-
-    bazzi = Bazzi()
-    game_world.add_object(bazzi, 0)
 
     monster_team = [Monster() for i in range(5)]
     monster_team[0].x, monster_team[0].y = 280, 500
@@ -122,8 +78,6 @@ def enter():
     monster_team[3].x, monster_team[3].y = 80, 150
     monster_team[4].x, monster_team[4].y = 600, 510
     monster_team[4].dir = 2
-
-    bubble_team = [Bubble() for i in range(195)]
 
     for n in range(195):
         if block_x > 610:
@@ -177,95 +131,51 @@ def enter():
         else:
             box_color = 0
             box_broken = 0
-        stage1_block_state.append(box_color)
-        stage1_block_broken.append(box_broken)
-        stage1_block_x.append(block_x)
-        stage1_block_y.append(block_y)
+
+        block = Block(block_x, block_y, box_color, box_broken)
+        game_world.add_object(block, 1)
+
         block_x += 40.2
+
+    bazzi = Bazzi()
+    game_world.add_object(bazzi, 1)
     pass
 
 
 def exit():
-    global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_house1, stage1_house2, stage1_house3, stage1_tree
-    global stage1_block_state, stage1_block_broken, stage1_block_x, stage1_block_y
-    global bazzi, bubble_team, monster_team
+    global stage1_map
+    global bazzi, monster_team
     del(stage1_map)
-    del(stage1_box1)
-    del(stage1_box2)
-    del(stage1_box3)
-    del(stage1_house1)
-    del(stage1_house2)
-    del(stage1_house3)
-    del(stage1_tree)
-    del(stage1_block_state)
-    del(stage1_block_broken)
-    del(stage1_block_x)
-    del(stage1_block_y)
 
-    del(bazzi)
-    del(bubble_team)
     del(monster_team)
-
+    del(bazzi)
     game_world.clear()
     pass
 
 
 def update():
-    global bazzi, bubble_team, monster_team
+    global monster_team
 
-    for bubble in bubble_team:
-        bubble.update()
     for monster in monster_team:
         monster.update()
-    bazzi.update()
+
     for game_object in game_world.all_objects():
         game_object.update()
+
     delay(0.03)
     pass
 
 
 def draw():
-    global stage1_block_state, stage1_block_x, stage1_block_y
-    global stage1_map, stage1_box1, stage1_box2, stage1_box3, stage1_tree
-    global stage1_house1, stage1_house2, stage1_house3
-    global box_frame_x, box_frame_y
-    global bubble_team, monster_team
+    global stage1_map
+    global monster_team
 
     clear_canvas()
     stage1_map.draw(WIDTH // 2, HEIGHT // 2)
-    # stage1_block_state
-    # 0: NULL
-    # 1: red blockd
-    # 2: yellow block
-    # 3: box
-    # 4: red house
-    # 5: yellow house
-    # 6: blue house
-    # 7: tree
-    # 8: bubble
-    # x 80.4 , y 81
-    for n in range(195):
-        if stage1_block_state[n] == 1:
-            stage1_box2.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage1_block_x[n], stage1_block_y[n])
-        elif stage1_block_state[n] == 2:
-            stage1_box3.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage1_block_x[n], stage1_block_y[n])
-        elif stage1_block_state[n] == 3:
-            stage1_box1.clip_draw(box_frame_x * 40, box_frame_y * 45, 41, 45, stage1_block_x[n], stage1_block_y[n])
-        elif stage1_block_state[n] == 4:
-            stage1_house1.clip_draw(0, 0, 41, 57, stage1_block_x[n], stage1_block_y[n] + 7)
-        elif stage1_block_state[n] == 5:
-            stage1_house2.clip_draw(0, 0, 41, 57, stage1_block_x[n], stage1_block_y[n] + 7)
-        elif stage1_block_state[n] == 6:
-            stage1_house3.clip_draw(0, 0, 41, 57, stage1_block_x[n], stage1_block_y[n] + 7)
-        elif stage1_block_state[n] == 7:
-            stage1_tree.clip_draw(0, 0, 40, 70, stage1_block_x[n], stage1_block_y[n] + 12)
 
-    for bubble in bubble_team:
-        bubble.draw()
     for monster in monster_team:
         monster.draw()
 
-    bazzi.draw()
     for game_object in game_world.all_objects():
         game_object.draw()
     update_canvas()
@@ -284,7 +194,6 @@ def handle_events():
 
 def makeBubble(x, y):
     global stage1_block_state, stage1_block_x, stage1_block_y
-    global stage
     global bubble_team
 
     for i in range(195):

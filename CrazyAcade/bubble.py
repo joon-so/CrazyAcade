@@ -1,8 +1,6 @@
 from pico2d import *
 import game_world
 
-BUBBLE_TIMER = range(1)
-
 class IdleState():
     @staticmethod
     def enter(bubble, event):
@@ -18,21 +16,13 @@ class IdleState():
         bubble.timer -= 1
         if bubble.timer == 0:
             game_world.remove_object(bubble)
+            print('Delete Bubble')
             #bubble.add_event(BUBBLE_TIMER)
 
     @staticmethod
     def draw(bubble):
         bubble.image.clip_draw(bubble.frame * 40, 0, 40, 40, bubble.x, bubble.y - 7)
     pass
-
-
-class PopState():
-    pass
-
-
-next_state_table = {
-    IdleState: {BUBBLE_TIMER: PopState}
-}
 
 
 class Bubble:
