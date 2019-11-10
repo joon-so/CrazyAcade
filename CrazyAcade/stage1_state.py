@@ -6,6 +6,7 @@ from pico2d import *
 
 from stage1_block import Block
 from bazzi import Bazzi
+from stage1_enemy import Enemy
 
 WIDTH, HEIGHT = 800, 600
 stage1_map = None
@@ -13,12 +14,9 @@ running = True
 
 bazzi = None
 block = None
+enemy = None
 
 bazzi_running = False
-
-monster_team = None
-
-bubble_team = None
 
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
@@ -28,56 +26,13 @@ block_x, block_y = 39, 540
 box_color = 0
 box_broken = 0
 
-class Monster:
-    def __init__(self):
-        self.x, self.y = 200, 200
-        self.frame_x, self.frame_y = 1, 0
-        self.dir = 1
-        self.timer = 0
-        self.image = load_image('resource/Monster_Basic.png')
-
-    def update(self):
-        self.timer += 1
-        if self.timer == 2:
-            if self.dir == 1:
-                self.frame_y = 170
-                self.y -= 1
-            elif self.dir == 2:
-                self.frame_y = 136
-                self.x -= 1
-            elif self.dir == 3:
-                self.frame_y = 102
-                self.x += 1
-            elif self.dir == 4:
-                self.frame_y = 68
-                self.y += 1
-
-            if self.frame_x == 1:
-                self.frame_x = 0
-            else:
-                self.frame_x = 1
-            self.timer = 0
-
-    def draw(self):
-        self.image.clip_draw(self.frame_x * 34, self.frame_y, 34, 34, self.x, self.y)
-
 
 def enter():
     global stage1_map
-    global bazzi, block, monster_team
+    global bazzi, block, enemy
     global block_x, block_y, box_color, box_broken
 
     stage1_map = load_image('resource/Stage1.png')
-
-    monster_team = [Monster() for i in range(5)]
-    monster_team[0].x, monster_team[0].y = 280, 500
-    monster_team[1].x, monster_team[1].y = 350, 300
-    monster_team[1].dir = 4
-    monster_team[2].x, monster_team[2].y = 300, 100
-    monster_team[2].dir = 3
-    monster_team[3].x, monster_team[3].y = 80, 150
-    monster_team[4].x, monster_team[4].y = 600, 510
-    monster_team[4].dir = 2
 
     for n in range(195):
         if block_x > 610:
@@ -137,6 +92,23 @@ def enter():
 
         block_x += 40.2
 
+    x, y, dir = 280, 500, 1
+    enemy = Enemy(x, y, dir)
+    game_world.add_object(enemy, 1)
+
+    x, y, dir = 350, 300, 4
+    enemy = Enemy(x, y, dir)
+    game_world.add_object(enemy, 1)
+
+
+    x, y, dir = 300, 100, 3
+    enemy = Enemy(x, y, dir)
+    game_world.add_object(enemy, 1)
+
+    x, y, dir = 600, 510, 2
+    enemy = Enemy(x, y, dir)
+    game_world.add_object(enemy, 1)
+
     bazzi = Bazzi()
     game_world.add_object(bazzi, 1)
     pass
@@ -144,37 +116,28 @@ def enter():
 
 def exit():
     global stage1_map
-    global bazzi, monster_team
+    global bazzi, enemy, block
     del(stage1_map)
-
-    del(monster_team)
+    del(enemy)
+    del(block)
     del(bazzi)
     game_world.clear()
     pass
 
 
 def update():
-    global monster_team
-
-    for monster in monster_team:
-        monster.update()
-
     for game_object in game_world.all_objects():
         game_object.update()
 
-    delay(0.03)
+    delay(0.01)
     pass
 
 
 def draw():
     global stage1_map
-    global monster_team
 
     clear_canvas()
     stage1_map.draw(WIDTH // 2, HEIGHT // 2)
-
-    for monster in monster_team:
-        monster.draw()
 
     for game_object in game_world.all_objects():
         game_object.draw()

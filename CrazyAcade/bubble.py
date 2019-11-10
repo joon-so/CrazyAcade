@@ -29,7 +29,7 @@ class Bubble:
     image = None
 
     def __init__(self, x = 9999, y = 9999):
-        self.timer = 20
+        self.timer = 30
         self.frame = 0
         self.x, self.y = x, y
         self.cur_state = IdleState
