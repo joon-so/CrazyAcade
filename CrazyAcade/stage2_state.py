@@ -35,7 +35,6 @@ def enter():
 
     stage2_map = load_image('resource/Stage2.png')
 
-    bazzi = Bazzi()
     enemy = []
     block = []
     for i in range(195):
@@ -100,6 +99,7 @@ def enter():
     game_world.add_objects(enemy, 1)
 
     bazzi = Bazzi()
+    bazzi.stage = 2
     game_world.add_object(bazzi, 2)
     pass
 

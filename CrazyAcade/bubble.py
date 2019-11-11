@@ -27,10 +27,11 @@ class IdleState():
 
 class Bubble:
     image = None
-
-    def __init__(self, x = 9999, y = 9999):
+    image
+    def __init__(self, x = 9999, y = 9999, range = 0):
         self.timer = 30
         self.frame = 0
+        self.range = range
         self.x, self.y = x, y
         self.cur_state = IdleState
         if Bubble.image == None:

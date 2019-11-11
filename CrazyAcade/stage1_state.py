@@ -12,9 +12,9 @@ WIDTH, HEIGHT = 800, 600
 stage1_map = None
 running = True
 
-bazzi_1 = None
-block_1 = None
-enemy_1 = None
+bazzi = None
+block = None
+enemy = None
 
 bazzi_running = False
 
@@ -29,11 +29,11 @@ box_broken = 0
 
 def enter():
     global stage1_map
-    global bazzi_1, block_1, enemy_1
+    global bazzi, block, enemy
     global block_x, block_y, box_color, box_broken
 
-    block_1 = []
-    enemy_1 = []
+    block = []
+    enemy = []
     stage1_map = load_image('resource/Stage1.png')
 
     for n in range(195):
@@ -89,27 +89,28 @@ def enter():
             box_color = 0
             box_broken = 0
 
-        block_1.append(Block(block_x, block_y, box_color, box_broken))
+        block.append(Block(block_x, block_y, box_color, box_broken))
         block_x += 40.2
 
-    game_world.add_objects(block_1, 0)
+    game_world.add_objects(block, 0)
 
     x, y, dir = 280, 500, 1
-    enemy_1.append(Enemy(x, y, dir))
+    enemy.append(Enemy(x, y, dir))
 
     x, y, dir = 350, 300, 4
-    enemy_1.append(Enemy(x, y, dir))
+    enemy.append(Enemy(x, y, dir))
 
 
     x, y, dir = 300, 100, 3
-    enemy_1.append(Enemy(x, y, dir))
+    enemy.append(Enemy(x, y, dir))
 
     x, y, dir = 600, 510, 2
-    enemy_1.append(Enemy(x, y, dir))
-    game_world.add_objects(enemy_1, 1)
+    enemy.append(Enemy(x, y, dir))
+    game_world.add_objects(enemy, 1)
 
-    bazzi_1 = Bazzi()
-    game_world.add_object(bazzi_1, 2)
+    bazzi = Bazzi()
+    bazzi.stage = 1
+    game_world.add_object(bazzi, 2)
     pass
 
 
@@ -141,20 +142,20 @@ def draw():
 
 
 def handle_events():
-    global bazzi_1, block_1, enemy_1
+    global bazzi, block, enemy
     events = get_events()
     for event in events:
         if event.key == SDLK_2:
             game_framework.change_state(stage2_state)
-            game_world.remove_object(bazzi_1)
-            for n in range(len(block_1)):
-                game_world.remove_object(block_1[n])
-            for n in range(len(enemy_1)):
-                game_world.remove_object(enemy_1[n])
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            for n in range(len(enemy)):
+                game_world.remove_object(enemy[n])
         elif event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            bazzi_1.handle_event(event)
+            bazzi.handle_event(event)
 
 
 def makeBubble(x, y):

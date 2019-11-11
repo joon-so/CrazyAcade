@@ -2,6 +2,9 @@ from pico2d import *
 from bubble import Bubble
 
 import game_world
+import stage1_state
+import stage2_state
+import boss_stage
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, G, H = range(10)
 
@@ -142,6 +145,8 @@ class Bazzi:
         self.x, self.y = 40, 560
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
+        self.stage = 0
+        self.bubble_range = 1
         self.frame_x, self.frame_y = 0, 420
         self.image = load_image('resource/Character1_edit.png')
         self.event_que = []
@@ -149,10 +154,36 @@ class Bazzi:
         self.cur_state.enter(self, None)
 
     def make_bubble(self):
-        bubble = Bubble(self.x, self.y)
-        game_world.add_object(bubble, 1)
-        print('one two three four bubble bubble')
-        pass
+        if self.stage == 1:
+            for i in range(195):
+                if stage1_state.block[i].block_x <= self.x + 20.1 < stage1_state.block[i].block_x + 40.2:
+                    if stage1_state.block[i].block_y <= self.y - 10 < stage1_state.block[i].block_y + 40:
+                        if stage1_state.block[i].box_color == 0:
+                            #stage1_state.block[i].box_color = 8
+                            bubble = Bubble(stage1_state.block[i].block_x, stage1_state.block[i].block_y + 10, self.bubble_range)
+                            game_world.add_object(bubble, 1)
+                            print('one two three four bubble bubble')
+                            break
+        elif self.stage == 2:
+            for i in range(195):
+                if stage2_state.block[i].block_x <= self.x + 20.1 < stage2_state.block[i].block_x + 40.2:
+                    if stage2_state.block[i].block_y <= self.y - 10 < stage2_state.block[i].block_y + 40:
+                        if stage2_state.block[i].box_color == 0:
+                            #stage1_state.block[i].box_color = 8
+                            bubble = Bubble(stage2_state.block[i].block_x, stage2_state.block[i].block_y + 10, self.bubble_range)
+                            game_world.add_object(bubble, 1)
+                            print('one two three four bubble bubble')
+                            break
+        elif self.stage == 3:
+            for i in range(195):
+                if boss_stage.block[i].block_x <= self.x + 20.1 < boss_stage.block[i].block_x + 40.2:
+                    if boss_stage.block[i].block_y <= self.y - 10 < boss_stage.block[i].block_y + 40:
+                        if boss_stage.block[i].box_color == 0:
+                            #stage1_state.block[i].box_color = 8
+                            bubble = Bubble(boss_stage.block[i].block_x, boss_stage.block[i].block_y + 10, self.bubble_range)
+                            game_world.add_object(bubble, 1)
+                            print('one two three four bubble bubble')
+                            break
 
     def add_event(self, event):
         self.event_que.insert(0, event)

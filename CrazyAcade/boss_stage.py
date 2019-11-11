@@ -31,6 +31,7 @@ def enter():
 
     stage2_map = load_image('resource/stage2.png')
     bazzi = Bazzi()
+    bazzi.stage = 3
     game_world.add_object(bazzi, 2)
 
     boss = Boss()
