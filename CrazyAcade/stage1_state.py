@@ -32,6 +32,8 @@ def enter():
     global bazzi_1, block_1, enemy_1
     global block_x, block_y, box_color, box_broken
 
+    block_1 = []
+    enemy_1 = []
     stage1_map = load_image('resource/Stage1.png')
 
     for n in range(195):
@@ -87,28 +89,24 @@ def enter():
             box_color = 0
             box_broken = 0
 
-        block_1 = Block(block_x, block_y, box_color, box_broken)
-        game_world.add_object(block_1, 0)
-
-
+        block_1.append(Block(block_x, block_y, box_color, box_broken))
         block_x += 40.2
 
+    game_world.add_objects(block_1, 0)
+
     x, y, dir = 280, 500, 1
-    enemy_1 = Enemy(x, y, dir)
-    game_world.add_object(enemy_1, 1)
+    enemy_1.append(Enemy(x, y, dir))
 
     x, y, dir = 350, 300, 4
-    enemy_1 = Enemy(x, y, dir)
-    game_world.add_object(enemy_1, 1)
+    enemy_1.append(Enemy(x, y, dir))
 
 
     x, y, dir = 300, 100, 3
-    enemy_1 = Enemy(x, y, dir)
-    game_world.add_object(enemy_1, 1)
+    enemy_1.append(Enemy(x, y, dir))
 
     x, y, dir = 600, 510, 2
-    enemy_1 = Enemy(x, y, dir)
-    game_world.add_object(enemy_1, 1)
+    enemy_1.append(Enemy(x, y, dir))
+    game_world.add_objects(enemy_1, 1)
 
     bazzi_1 = Bazzi()
     game_world.add_object(bazzi_1, 2)
@@ -148,12 +146,11 @@ def handle_events():
     for event in events:
         if event.key == SDLK_2:
             game_framework.change_state(stage2_state)
-            #한개의 오브젝트만 지워짐--------수정
             game_world.remove_object(bazzi_1)
-            game_world.remove_object(block_1)
-            game_world.remove_object(enemy_1)
-            #game_world.clear()
-            #stage2_state.enter()
+            for n in range(len(block_1)):
+                game_world.remove_object(block_1[n])
+            for n in range(len(enemy_1)):
+                game_world.remove_object(enemy_1[n])
         elif event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
