@@ -146,7 +146,7 @@ class Bazzi:
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
         self.stage = 0
-        self.bubble_range = 1
+        self.bubble_range = 2
         self.frame_x, self.frame_y = 0, 420
         self.image = load_image('resource/Character1_edit.png')
         self.event_que = []
