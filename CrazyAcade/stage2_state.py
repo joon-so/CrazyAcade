@@ -36,7 +36,8 @@ def enter():
     stage2_map = load_image('resource/Stage2.png')
 
     bazzi = Bazzi()
-
+    enemy = []
+    block = []
     for i in range(195):
         if block_x > 610:
             block_y -= 40
@@ -80,27 +81,23 @@ def enter():
             box_color = 0
             box_broken = 0
 
-        block = Block(block_x, block_y, box_color, box_broken)
-        game_world.add_object(block, 1)
-
+        block.append(Block(block_x, block_y, box_color, box_broken))
         block_x += 40.2
+    game_world.add_objects(block, 0)
 
     x, y, dir = 200, 395, 3
-    enemy = Enemy(x, y, dir)
-    game_world.add_object(enemy, 1)
+    enemy.append(Enemy(x, y, dir))
 
     x, y, dir = 282, 200, 4
-    enemy = Enemy(x, y, dir)
-    game_world.add_object(enemy, 1)
+    enemy.append(Enemy(x, y, dir))
 
 
     x, y, dir = 480, 310, 2
-    enemy = Enemy(x, y, dir)
-    game_world.add_object(enemy, 1)
+    enemy.append(Enemy(x, y, dir))
 
     x, y, dir = 362, 480, 1
-    enemy = Enemy(x, y, dir)
-    game_world.add_object(enemy, 1)
+    enemy.append(Enemy(x, y, dir))
+    game_world.add_objects(enemy, 1)
 
     bazzi = Bazzi()
     game_world.add_object(bazzi, 2)
@@ -109,16 +106,11 @@ def enter():
 
 def exit():
     global stage2_map
-    global bazzi, block, enemy
     global block_y, block_x
 
     del(stage2_map)
-    del(bazzi)
-    del(block)
-    del(enemy)
     del(block_x)
     del(block_y)
-    game_world.clear()
     pass
 
 
@@ -142,10 +134,16 @@ def draw():
 
 
 def handle_events():
+    global bazzi, block, enemy
     events = get_events()
     for event in events:
         if event.key == SDLK_3:
             game_framework.change_state(boss_stage)
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            for n in range(len(enemy)):
+                game_world.remove_object(enemy[n])
         elif event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:

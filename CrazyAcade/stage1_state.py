@@ -114,10 +114,10 @@ def enter():
 
 
 def exit():
-    global stage1_map
+    global stage1_map, block_x, block_y
     del(stage1_map)
-    #stage2_state.enter()
-    #game_world.clear()
+    del(block_x)
+    del(block_y)
     pass
 
 
