@@ -91,7 +91,7 @@ class PopState():
                                     break
 
                         for j in range(bubble.range_down):
-                            if i + 15 * (j + 1) <= 195:
+                            if i + 15 * (j + 1) < 195:
                                 if stage1_state.block[i + 15 * (j + 1)].box_color != 0:
                                     if stage1_state.block[i + 15 * (j + 1)].box_color == 1 or stage1_state.block[i + 15 * (j + 1)].box_color == 2 \
                                             or stage1_state.block[i + 15 * (j + 1)].box_color == 3:
@@ -151,7 +151,7 @@ class PopState():
                                     break
 
                         for j in range(bubble.range_down):
-                            if i + 15 * (j + 1) <= 195:
+                            if i + 15 * (j + 1) < 195:
                                 if stage2_state.block[i + 15 * (j + 1)].box_color != 0:
                                     if stage2_state.block[i + 15 * (j + 1)].box_color == 1 or stage2_state.block[i + 15 * (j + 1)].box_color == 2 \
                                             or stage2_state.block[i + 15 * (j + 1)].box_color == 3:
