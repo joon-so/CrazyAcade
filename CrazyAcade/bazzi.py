@@ -114,6 +114,8 @@ class RunState():
 
         bazzi.x += bazzi.bazzi_dir_x * 8
         bazzi.y += bazzi.bazzi_dir_y * 8
+        bazzi.x = clamp(39, bazzi.x, 600)
+        bazzi.y = clamp(70, bazzi.y, 560)
         #Crush Check
 
     @staticmethod
