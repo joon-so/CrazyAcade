@@ -22,7 +22,6 @@ class IdleState():
         bubble.frame = (bubble.frame + 1) % 4
         bubble.timer -= 1
         if bubble.timer == 0:
-            #game_world.remove_object(bubble)
             print('Pop Bubble')
             bubble.add_event(POP_TIMER)
 
@@ -53,11 +52,6 @@ class PopState():
         if bubble.timer == 0:
             game_world.remove_object(bubble)
             print('Delete Bubble')
-        # bubble.frame = (bubble.frame + 1) % 4
-        # bubble.timer -= 1
-        # if bubble.timer == 0:
-        #     game_world.remove_object(bubble)
-        #     print('Delete Bubble')
 
     @staticmethod
     def draw(bubble):
@@ -291,4 +285,3 @@ class Bubble:
 
     def draw(self):
         self.cur_state.draw(self)
-        #bubble delete
