@@ -105,7 +105,7 @@ class PopState():
                                     bubble.range_down = j
                                     break
                             else:
-                                bubble.range_down = 0
+                                bubble.range_down = j
                                 break
 
                         for j in range(bubble.range_up):
@@ -117,7 +117,7 @@ class PopState():
                                     bubble.range_up = j
                                     break
                             else:
-                                bubble.range_up = 0
+                                bubble.range_up = j
                                 break
 
                         break
@@ -165,7 +165,7 @@ class PopState():
                                     bubble.range_down = j
                                     break
                             else:
-                                bubble.range_down = 0
+                                bubble.range_down = j
                                 break
 
                         for j in range(bubble.range_up):
@@ -177,7 +177,55 @@ class PopState():
                                     bubble.range_up = j
                                     break
                             else:
-                                bubble.range_up = 0
+                                bubble.range_up = j
+                                break
+
+                        break
+
+        elif bubble.stage == 3:
+            for i in range(195):
+                if boss_stage.block[i].block_x <= bubble.x < boss_stage.block[i].block_x + 40.2:
+                    if boss_stage.block[i].block_y <= bubble.y < boss_stage.block[i].block_y + 40:
+                        for j in range(bubble.range_left):
+                            if (i - j - 1) == -1 or i % 15 == 0:
+                                bubble.range_left = 0
+                                break
+                            elif ((i - j - 1) % 15) - 14 == 0:
+                                bubble.range_left = j
+                                break
+                            else:
+                                if boss_stage.block[i - j - 1].box_color != 0:
+                                    bubble.range_left = j
+                                    break
+
+                        for j in range(bubble.range_right):
+                            if (i + j + 1) >= 195 or i % 15 - 14 == 0:
+                                bubble.range_right = 0
+                                break
+                            elif (i + j + 1) % 15 == 0:
+                                bubble.range_right = j
+                                break
+                            else:
+                                if boss_stage.block[i + j + 1].box_color != 0:
+                                    bubble.range_right = j
+                                    break
+
+                        for j in range(bubble.range_down):
+                            if i + 15 * (j + 1) < 195:
+                                if boss_stage.block[i + 15 * (j + 1)].box_color != 0:
+                                    bubble.range_down = j
+                                    break
+                            else:
+                                bubble.range_down = j
+                                break
+
+                        for j in range(bubble.range_up):
+                            if i - 15 * (j + 1) >= 0:
+                                if boss_stage.block[i - 15 * (j + 1)].box_color != 0:
+                                    bubble.range_up = j
+                                    break
+                            else:
+                                bubble.range_up = j
                                 break
 
                         break
