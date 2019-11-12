@@ -77,7 +77,6 @@ class PopState():
                                 if stage1_state.block[i - j - 1].box_color != 0:
                                     if stage1_state.block[i - j - 1].box_color == 1 or stage1_state.block[i - j - 1].box_color == 2 \
                                             or stage1_state.block[i - j - 1].box_color == 3:
-                                        #stage1_state.block[i - j - 1].box_color = 0
                                         stage1_state.block[i - j - 1].box_broken = 0
                                     bubble.range_left = j
                                     break
@@ -93,7 +92,6 @@ class PopState():
                                 if stage1_state.block[i + j + 1].box_color != 0:
                                     if stage1_state.block[i + j + 1].box_color == 1 or stage1_state.block[i + j + 1].box_color == 2 \
                                             or stage1_state.block[i + j + 1].box_color == 3:
-                                        #stage1_state.block[i + j + 1].box_color = 0
                                         stage1_state.block[i + j + 1].box_broken = 0
                                     bubble.range_right = j
                                     break
@@ -103,7 +101,6 @@ class PopState():
                                 if stage1_state.block[i + 15 * (j + 1)].box_color != 0:
                                     if stage1_state.block[i + 15 * (j + 1)].box_color == 1 or stage1_state.block[i + 15 * (j + 1)].box_color == 2 \
                                             or stage1_state.block[i + 15 * (j + 1)].box_color == 3:
-                                        #stage1_state.block[i + 15 * (j + 1)].box_color = 0
                                         stage1_state.block[i + 15 * (j + 1)].box_broken = 0
                                     bubble.range_down = j
                                     break
@@ -116,7 +113,6 @@ class PopState():
                                 if stage1_state.block[i - 15 * (j + 1)].box_color != 0:
                                     if stage1_state.block[i - 15 * (j + 1)].box_color == 1 or stage1_state.block[i - 15 * (j + 1)].box_color == 2 \
                                             or stage1_state.block[i - 15 * (j + 1)].box_color == 3:
-                                        #stage1_state.block[i - 15 * (j + 1)].box_color = 0
                                         stage1_state.block[i - 15 * (j + 1)].box_broken = 0
                                     bubble.range_up = j
                                     break
@@ -125,23 +121,67 @@ class PopState():
                                 break
 
                         break
-        # elif bazzi.stage == 2:
-        #     for i in range(195):
-        #         if stage2_state.block[i].block_x <= bubble.x < stage2_state.block[i].block_x + 40.2:
-        #             if stage2_state.block[i].block_y <= bubble.y < stage2_state.block[i].block_y + 40:
-        #                 if stage2_state.block[i].box_color == 1 or stage2_state.block[i].box_color == 2\
-        #                         or stage2_state.block[i].box_color == 3:
-        #                     #stage1_state.block[i].box_color = 8
-        #
-        #                     break
-        # elif bazzi.stage == 3:
-        #     for i in range(195):
-        #         if boss_stage.block[i].block_x <= bubble.x < boss_stage.block[i].block_x + 40.2:
-        #             if boss_stage.block[i].block_y <= bubble.y < boss_stage.block[i].block_y + 40:
-        #                 if boss_stage.block[i].box_color == 0:
-        #                     #stage1_state.block[i].box_color = 8
-        #
-        #                     break
+
+        elif bubble.stage == 2:
+            for i in range(195):
+                if stage2_state.block[i].block_x <= bubble.x < stage2_state.block[i].block_x + 40.2:
+                    if stage2_state.block[i].block_y <= bubble.y < stage2_state.block[i].block_y + 40:
+                        for j in range(bubble.range_left):
+                            if (i - j - 1) == -1 or i % 15 == 0:
+                                bubble.range_left = 0
+                                break
+                            elif ((i - j - 1) % 15) - 14 == 0:
+                                bubble.range_left = j
+                                break
+                            else:
+                                if stage2_state.block[i - j - 1].box_color != 0:
+                                    if stage2_state.block[i - j - 1].box_color == 1 or stage2_state.block[i - j - 1].box_color == 2 \
+                                            or stage2_state.block[i - j - 1].box_color == 3:
+                                        stage2_state.block[i - j - 1].box_broken = 0
+                                    bubble.range_left = j
+                                    break
+
+                        for j in range(bubble.range_right):
+                            if (i + j + 1) >= 195 or i % 15 - 14 == 0:
+                                bubble.range_right = 0
+                                break
+                            elif (i + j + 1) % 15 == 0:
+                                bubble.range_right = j
+                                break
+                            else:
+                                if stage2_state.block[i + j + 1].box_color != 0:
+                                    if stage2_state.block[i + j + 1].box_color == 1 or stage2_state.block[i + j + 1].box_color == 2 \
+                                            or stage2_state.block[i + j + 1].box_color == 3:
+                                        stage2_state.block[i + j + 1].box_broken = 0
+                                    bubble.range_right = j
+                                    break
+
+                        for j in range(bubble.range_down):
+                            if i + 15 * (j + 1) <= 195:
+                                if stage2_state.block[i + 15 * (j + 1)].box_color != 0:
+                                    if stage2_state.block[i + 15 * (j + 1)].box_color == 1 or stage2_state.block[i + 15 * (j + 1)].box_color == 2 \
+                                            or stage2_state.block[i + 15 * (j + 1)].box_color == 3:
+                                        stage2_state.block[i + 15 * (j + 1)].box_broken = 0
+                                    bubble.range_down = j
+                                    break
+                            else:
+                                bubble.range_down = 0
+                                break
+
+                        for j in range(bubble.range_up):
+                            if i - 15 * (j + 1) >= 0:
+                                if stage2_state.block[i - 15 * (j + 1)].box_color != 0:
+                                    if stage2_state.block[i - 15 * (j + 1)].box_color == 1 or stage2_state.block[i - 15 * (j + 1)].box_color == 2 \
+                                            or stage2_state.block[i - 15 * (j + 1)].box_color == 3:
+                                        stage2_state.block[i - 15 * (j + 1)].box_broken = 0
+                                    bubble.range_up = j
+                                    break
+                            else:
+                                bubble.range_up = 0
+                                break
+
+                        break
+
         for i in range(bubble.range_left):
             if i == bubble.range_left - 1:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
