@@ -162,7 +162,7 @@ class Bazzi:
                     if stage1_state.block[i].block_y <= self.y - 10 < stage1_state.block[i].block_y + 40:
                         if stage1_state.block[i].box_color == 0:
                             #stage1_state.block[i].box_color = 8
-                            bubble = Bubble(stage1_state.block[i].block_x, stage1_state.block[i].block_y + 10, self.bubble_range)
+                            bubble = Bubble(stage1_state.block[i].block_x, stage1_state.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
                             print('one two three four bubble bubble')
                             break
@@ -172,7 +172,7 @@ class Bazzi:
                     if stage2_state.block[i].block_y <= self.y - 10 < stage2_state.block[i].block_y + 40:
                         if stage2_state.block[i].box_color == 0:
                             #stage1_state.block[i].box_color = 8
-                            bubble = Bubble(stage2_state.block[i].block_x, stage2_state.block[i].block_y + 10, self.bubble_range)
+                            bubble = Bubble(stage2_state.block[i].block_x, stage2_state.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
                             print('one two three four bubble bubble')
                             break
@@ -182,7 +182,7 @@ class Bazzi:
                     if boss_stage.block[i].block_y <= self.y - 10 < boss_stage.block[i].block_y + 40:
                         if boss_stage.block[i].box_color == 0:
                             #stage1_state.block[i].box_color = 8
-                            bubble = Bubble(boss_stage.block[i].block_x, boss_stage.block[i].block_y + 10, self.bubble_range)
+                            bubble = Bubble(boss_stage.block[i].block_x, boss_stage.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
                             print('one two three four bubble bubble')
                             break

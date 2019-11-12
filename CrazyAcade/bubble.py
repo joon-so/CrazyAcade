@@ -3,6 +3,7 @@ import game_world
 import stage1_state
 import stage2_state
 import boss_stage
+import bazzi
 
 POP_TIMER = range(1)
 
@@ -22,7 +23,7 @@ class IdleState():
         bubble.timer -= 1
         if bubble.timer == 0:
             #game_world.remove_object(bubble)
-            print('Delete Bubble')
+            print('Pop Bubble')
             bubble.add_event(POP_TIMER)
 
     @staticmethod
@@ -61,16 +62,108 @@ class PopState():
     @staticmethod
     def draw(bubble):
         bubble.pop_image.clip_draw(bubble.frame * 40, 320, 40, 40, bubble.x, bubble.y - 7)
-        for i in range(bubble.range):
-            if i == bubble.range - 1:
+        if bubble.stage == 1:
+            for i in range(195):
+                if stage1_state.block[i].block_x <= bubble.x < stage1_state.block[i].block_x + 40.2:
+                    if stage1_state.block[i].block_y <= bubble.y < stage1_state.block[i].block_y + 40:
+                        for j in range(bubble.range_left):
+                            if (i - j - 1) == -1 or i % 15 == 0:
+                                bubble.range_left = 0
+                                break
+                            elif ((i - j - 1) % 15) - 14 == 0:
+                                bubble.range_left = j
+                                break
+                            else:
+                                if stage1_state.block[i - j - 1].box_color != 0:
+                                    if stage1_state.block[i - j - 1].box_color == 1 or stage1_state.block[i - j - 1].box_color == 2 \
+                                            or stage1_state.block[i - j - 1].box_color == 3:
+                                        #stage1_state.block[i - j - 1].box_color = 0
+                                        stage1_state.block[i - j - 1].box_broken = 0
+                                    bubble.range_left = j
+                                    break
+
+                        for j in range(bubble.range_right):
+                            if (i + j + 1) >= 195 or i % 15 - 14 == 0:
+                                bubble.range_right = 0
+                                break
+                            elif (i + j + 1) % 15 == 0:
+                                bubble.range_right = j
+                                break
+                            else:
+                                if stage1_state.block[i + j + 1].box_color != 0:
+                                    if stage1_state.block[i + j + 1].box_color == 1 or stage1_state.block[i + j + 1].box_color == 2 \
+                                            or stage1_state.block[i + j + 1].box_color == 3:
+                                        #stage1_state.block[i + j + 1].box_color = 0
+                                        stage1_state.block[i + j + 1].box_broken = 0
+                                    bubble.range_right = j
+                                    break
+
+                        for j in range(bubble.range_down):
+                            if i + 15 * (j + 1) <= 195:
+                                if stage1_state.block[i + 15 * (j + 1)].box_color != 0:
+                                    if stage1_state.block[i + 15 * (j + 1)].box_color == 1 or stage1_state.block[i + 15 * (j + 1)].box_color == 2 \
+                                            or stage1_state.block[i + 15 * (j + 1)].box_color == 3:
+                                        #stage1_state.block[i + 15 * (j + 1)].box_color = 0
+                                        stage1_state.block[i + 15 * (j + 1)].box_broken = 0
+                                    bubble.range_down = j
+                                    break
+                            else:
+                                bubble.range_down = 0
+                                break
+
+                        for j in range(bubble.range_up):
+                            if i - 15 * (j + 1) >= 0:
+                                if stage1_state.block[i - 15 * (j + 1)].box_color != 0:
+                                    if stage1_state.block[i - 15 * (j + 1)].box_color == 1 or stage1_state.block[i - 15 * (j + 1)].box_color == 2 \
+                                            or stage1_state.block[i - 15 * (j + 1)].box_color == 3:
+                                        #stage1_state.block[i - 15 * (j + 1)].box_color = 0
+                                        stage1_state.block[i - 15 * (j + 1)].box_broken = 0
+                                    bubble.range_up = j
+                                    break
+                            else:
+                                bubble.range_up = 0
+                                break
+
+                        break
+        # elif bazzi.stage == 2:
+        #     for i in range(195):
+        #         if stage2_state.block[i].block_x <= bubble.x < stage2_state.block[i].block_x + 40.2:
+        #             if stage2_state.block[i].block_y <= bubble.y < stage2_state.block[i].block_y + 40:
+        #                 if stage2_state.block[i].box_color == 1 or stage2_state.block[i].box_color == 2\
+        #                         or stage2_state.block[i].box_color == 3:
+        #                     #stage1_state.block[i].box_color = 8
+        #
+        #                     break
+        # elif bazzi.stage == 3:
+        #     for i in range(195):
+        #         if boss_stage.block[i].block_x <= bubble.x < boss_stage.block[i].block_x + 40.2:
+        #             if boss_stage.block[i].block_y <= bubble.y < boss_stage.block[i].block_y + 40:
+        #                 if boss_stage.block[i].box_color == 0:
+        #                     #stage1_state.block[i].box_color = 8
+        #
+        #                     break
+        for i in range(bubble.range_left):
+            if i == bubble.range_left - 1:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
-                bubble.pop_image.clip_draw(bubble.frame * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
-                bubble.pop_image.clip_draw(bubble.frame * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
-                bubble.pop_image.clip_draw(bubble.frame * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
             else:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 0, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
+
+        for i in range(bubble.range_right):
+            if i == bubble.range_right - 1:
+                bubble.pop_image.clip_draw(bubble.frame * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
+            else:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 40, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
+
+        for i in range(bubble.range_down):
+            if i == bubble.range_down - 1:
+                bubble.pop_image.clip_draw(bubble.frame * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
+            else:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 80, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
+
+        for i in range(bubble.range_up):
+            if i == bubble.range_up - 1:
+                bubble.pop_image.clip_draw(bubble.frame * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
+            else:
                 bubble.pop_image.clip_draw(bubble.frame * 40, 120, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
     pass
 
@@ -83,11 +176,12 @@ next_state_table = {
 class Bubble:
     image = None
     pop_image = None
-    def __init__(self, x = 9999, y = 9999, range = 0):
+    def __init__(self, x = 9999, y = 9999, bubble_range = 0, stage = 0):
         self.timer = 30
         self.frame = 0
-        self.range = range
+        self.range_right, self.range_left, self.range_up, self.range_down = bubble_range, bubble_range, bubble_range, bubble_range
         self.x, self.y = x, y
+        self.stage = stage
         self.cur_state = IdleState
         self.event_que = []
         self.cur_state = IdleState
