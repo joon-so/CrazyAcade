@@ -1,9 +1,15 @@
 from pico2d import *
 import game_world
+import game_framework
 import stage1_state
 import stage2_state
 import boss_stage
 import bazzi
+
+# Bubble Action Speed
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
 
 POP_TIMER = range(1)
 
@@ -19,22 +25,22 @@ class IdleState():
 
     @staticmethod
     def do(bubble):
-        bubble.frame = (bubble.frame + 1) % 4
-        bubble.timer -= 1
-        if bubble.timer == 0:
+        bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        bubble.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+        if bubble.timer <= 0:
             print('Pop Bubble')
             bubble.add_event(POP_TIMER)
 
     @staticmethod
     def draw(bubble):
-        bubble.image.clip_draw(bubble.frame * 40, 0, 40, 40, bubble.x, bubble.y - 7)
+        bubble.image.clip_draw(int(bubble.frame) * 40, 0, 40, 40, bubble.x, bubble.y - 7)
     pass
 
 
 class PopState():
     @staticmethod
     def enter(bubble, event):
-        bubble.timer = 15
+        bubble.timer = 8
         print('Pop')
         pass
 
@@ -44,18 +50,18 @@ class PopState():
 
     @staticmethod
     def do(bubble):
-        bubble.timer -= 1
+        bubble.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
         if bubble.timer < 4:
-            bubble.frame = (bubble.frame + 1) % 4
+            bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         else:
             bubble.frame = 0
-        if bubble.timer == 0:
+        if bubble.timer <= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time:
             game_world.remove_object(bubble)
             print('Delete Bubble')
 
     @staticmethod
     def draw(bubble):
-        bubble.pop_image.clip_draw(bubble.frame * 40, 320, 40, 40, bubble.x, bubble.y - 7)
+        bubble.pop_image.clip_draw(int(bubble.frame) * 40, 320, 40, 40, bubble.x, bubble.y - 7)
         if bubble.stage == 1:
             for i in range(195):
                 if stage1_state.block[i].block_x <= bubble.x < stage1_state.block[i].block_x + 40.2:
@@ -226,27 +232,27 @@ class PopState():
 
         for i in range(bubble.range_left):
             if i == bubble.range_left - 1:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
             else:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 0, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 0, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
 
         for i in range(bubble.range_right):
             if i == bubble.range_right - 1:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
             else:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 40, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 40, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
 
         for i in range(bubble.range_down):
             if i == bubble.range_down - 1:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
             else:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 80, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 80, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
 
         for i in range(bubble.range_up):
             if i == bubble.range_up - 1:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
             else:
-                bubble.pop_image.clip_draw(bubble.frame * 40, 120, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
+                bubble.pop_image.clip_draw(int(bubble.frame) * 40, 120, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
     pass
 
 
@@ -259,7 +265,7 @@ class Bubble:
     image = None
     pop_image = None
     def __init__(self, x = 9999, y = 9999, bubble_range = 0, stage = 0):
-        self.timer = 30
+        self.timer = 20
         self.frame = 0
         self.range_right, self.range_left, self.range_up, self.range_down = bubble_range, bubble_range, bubble_range, bubble_range
         self.x, self.y = x, y

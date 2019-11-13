@@ -1,10 +1,22 @@
 from pico2d import *
 from bubble import Bubble
 
+import game_framework
 import game_world
 import stage1_state
 import stage2_state
 import boss_stage
+
+# Bazzi Run Speed
+PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30cm
+RUN_SPEED_KMPH = 20.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+# Bazzi Action Speed
+TIME_PER_ACTION = 0.3
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 4
 
 RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, G, H = range(10)
 
@@ -26,22 +38,22 @@ class IdleState():
     @staticmethod
     def enter(bazzi, event):
         if event == RIGHT_DOWN:
-            bazzi.bazzi_dir_x += 1
+            bazzi.bazzi_dir_x += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            bazzi.bazzi_dir_x -= 1
+            bazzi.bazzi_dir_x -= RUN_SPEED_PPS
         elif event == UP_DOWN:
-            bazzi.bazzi_dir_y += 1
+            bazzi.bazzi_dir_y += RUN_SPEED_PPS
         elif event == DOWN_DOWN:
-            bazzi.bazzi_dir_y -= 1
+            bazzi.bazzi_dir_y -= RUN_SPEED_PPS
 
         elif event == RIGHT_UP:
-            bazzi.bazzi_dir_x -= 1
+            bazzi.bazzi_dir_x -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            bazzi.bazzi_dir_x += 1
+            bazzi.bazzi_dir_x += RUN_SPEED_PPS
         elif event == UP_UP:
-            bazzi.bazzi_dir_y -= 1
+            bazzi.bazzi_dir_y -= RUN_SPEED_PPS
         elif event == DOWN_UP:
-            bazzi.bazzi_dir_y += 1
+            bazzi.bazzi_dir_y += RUN_SPEED_PPS
 
     @staticmethod
     def exit(bazzi, event):
@@ -71,24 +83,24 @@ class RunState():
     def enter(bazzi, event):
         if event == RIGHT_DOWN:
             bazzi.bazzi_dir = 1
-            bazzi.bazzi_dir_x += 1
+            bazzi.bazzi_dir_x += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
             bazzi.bazzi_dir = 2
-            bazzi.bazzi_dir_x -= 1
+            bazzi.bazzi_dir_x -= RUN_SPEED_PPS
         elif event == UP_DOWN:
             bazzi.bazzi_dir = 3
-            bazzi.bazzi_dir_y += 1
+            bazzi.bazzi_dir_y += RUN_SPEED_PPS
         elif event == DOWN_DOWN:
             bazzi.bazzi_dir = 4
-            bazzi.bazzi_dir_y -= 1
+            bazzi.bazzi_dir_y -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            bazzi.bazzi_dir_x -= 1
+            bazzi.bazzi_dir_x -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            bazzi.bazzi_dir_x += 1
+            bazzi.bazzi_dir_x += RUN_SPEED_PPS
         elif event == UP_UP:
-            bazzi.bazzi_dir_y -= 1
+            bazzi.bazzi_dir_y -= RUN_SPEED_PPS
         elif event == DOWN_UP:
-            bazzi.bazzi_dir_y += 1
+            bazzi.bazzi_dir_y += RUN_SPEED_PPS
         bazzi_dir = 0
 
     @staticmethod
@@ -100,27 +112,27 @@ class RunState():
     @staticmethod
     def do(bazzi):
         if bazzi.bazzi_dir == 1:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4
+            bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
             bazzi.frame_y = 350
         elif bazzi.bazzi_dir == 2:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4
+            bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
             bazzi.frame_y = 280
         elif bazzi.bazzi_dir == 3:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4
+            bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
             bazzi.frame_y = 490
         elif bazzi.bazzi_dir == 4:
-            bazzi.frame_x = (bazzi.frame_x + 1) % 4
+            bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
             bazzi.frame_y = 420
 
-        bazzi.x += bazzi.bazzi_dir_x * 8
-        bazzi.y += bazzi.bazzi_dir_y * 8
+        bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time
+        bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time
         bazzi.x = clamp(39, bazzi.x, 600)
         bazzi.y = clamp(70, bazzi.y, 560)
         #Crush Check
 
     @staticmethod
     def draw(bazzi):
-        bazzi.image.clip_draw(bazzi.frame_x * 70, bazzi.frame_y, 70, 70, bazzi.x, bazzi.y)
+        bazzi.image.clip_draw(int(bazzi.frame_x) * 70, int(bazzi.frame_y), 70, 70, bazzi.x, bazzi.y)
     pass
 
 
@@ -142,9 +154,11 @@ next_state_table = {
 
 
 class Bazzi:
+    x = 40
+    y = 560
     def __init__(self):
         self.bazzi_dir = 0
-        self.x, self.y = 40, 560
+        #self.x, self.y = 40, 560
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
         self.stage = 0

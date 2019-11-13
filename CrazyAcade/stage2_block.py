@@ -1,5 +1,10 @@
 from pico2d import *
 import game_world
+import game_framework
+# Bubble Action Speed
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 9
 
 BLOCK_POP = range(1)
 
@@ -46,23 +51,26 @@ class BrokeState:
 
     @staticmethod
     def do(block):
-        block.box_frame_x = (block.box_frame_x + 1) % 3
-        if block.box_frame_x % 3 == 0:
-            block.box_frame_y -= 1
-            if block.box_frame_y == 0:
-                block.box_color = 0
-                game_world.remove_object(block)
-                print('Delete Block')
+        block.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * 1.5
+        if block.timer <= 0:
+            block.box_frame_x = (block.box_frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+            block.timer = 1
+            if int(block.box_frame_x) % 3 == 0:
+                block.box_frame_y -= 1
+                if block.box_frame_y == 0:
+                    block.box_color = 0
+                    game_world.remove_object(block)
+                    print('Delete Block')
         pass
 
     @staticmethod
     def draw(block):
         if block.box_color == 1:
-            block.stage2_box1.clip_draw(block.box_frame_x * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
+            block.stage2_box1.clip_draw(int(block.box_frame_x) * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
         elif block.box_color == 2:
-            block.stage2_box2.clip_draw(block.box_frame_x * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
+            block.stage2_box2.clip_draw(int(block.box_frame_x) * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
         elif block.box_color == 3:
-            block.stage2_box3.clip_draw(block.box_frame_x * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
+            block.stage2_box3.clip_draw(int(block.box_frame_x) * 40, block.box_frame_y * 45, 41, 45, block.block_x, block.block_y)
         elif block.box_color == 4:
             block.stage2_box4.clip_draw(0, 0, 41, 57, block.block_x, block.block_y + 7)
         elif block.box_color == 5:
@@ -79,6 +87,7 @@ class Block:
         self.block_x, self.block_y, self.box_color, self.box_broken = \
             block_x, block_y, box_color, box_broken
         self.box_frame_x, self.box_frame_y = 0, 2
+        self.timer = 1
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
