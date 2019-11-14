@@ -74,7 +74,10 @@ class PopState():
                                 bubble.range_left = j
                                 break
                             else:
-                                if stage1_state.block[i - j - 1].box_color != 0:
+                                if stage1_state.block[i - j - 1].box_color == 1 or stage1_state.block[i - j - 1].box_color == 2 \
+                                        or stage1_state.block[i - j - 1].box_color == 3 or stage1_state.block[i - j - 1].box_color == 4\
+                                        or stage1_state.block[i - j - 1].box_color == 5 or stage1_state.block[i - j - 1].box_color == 6\
+                                        or stage1_state.block[i - j - 1].box_color == 7:
                                     if stage1_state.block[i - j - 1].box_color == 1 or stage1_state.block[i - j - 1].box_color == 2 \
                                             or stage1_state.block[i - j - 1].box_color == 3:
                                         stage1_state.block[i - j - 1].box_broken = 0
@@ -89,7 +92,10 @@ class PopState():
                                 bubble.range_right = j
                                 break
                             else:
-                                if stage1_state.block[i + j + 1].box_color != 0:
+                                if stage1_state.block[i + j + 1].box_color == 1 or stage1_state.block[i + j + 1].box_color == 2 \
+                                        or stage1_state.block[i + j + 1].box_color == 3 or stage1_state.block[i + j + 1].box_color == 4\
+                                        or stage1_state.block[i + j + 1].box_color == 5 or stage1_state.block[i + j + 1].box_color == 6\
+                                        or stage1_state.block[i + j + 1].box_color == 7:
                                     if stage1_state.block[i + j + 1].box_color == 1 or stage1_state.block[i + j + 1].box_color == 2 \
                                             or stage1_state.block[i + j + 1].box_color == 3:
                                         stage1_state.block[i + j + 1].box_broken = 0
@@ -98,7 +104,10 @@ class PopState():
 
                         for j in range(bubble.range_down):
                             if i + 15 * (j + 1) < 195:
-                                if stage1_state.block[i + 15 * (j + 1)].box_color != 0:
+                                if stage1_state.block[i + 15 * (j + 1)].box_color == 1 or stage1_state.block[i + 15 * (j + 1)].box_color == 2 \
+                                        or stage1_state.block[i + 15 * (j + 1)].box_color == 3 or stage1_state.block[i + 15 * (j + 1)].box_color == 4 \
+                                        or stage1_state.block[i + 15 * (j + 1)].box_color == 5 or stage1_state.block[i + 15 * (j + 1)].box_color == 6 \
+                                        or stage1_state.block[i + 15 * (j + 1)].box_color == 7:
                                     if stage1_state.block[i + 15 * (j + 1)].box_color == 1 or stage1_state.block[i + 15 * (j + 1)].box_color == 2 \
                                             or stage1_state.block[i + 15 * (j + 1)].box_color == 3:
                                         stage1_state.block[i + 15 * (j + 1)].box_broken = 0
@@ -110,7 +119,10 @@ class PopState():
 
                         for j in range(bubble.range_up):
                             if i - 15 * (j + 1) >= 0:
-                                if stage1_state.block[i - 15 * (j + 1)].box_color != 0:
+                                if stage1_state.block[i - 15 * (j + 1)].box_color == 1 or stage1_state.block[i - 15 * (j + 1)].box_color == 2 \
+                                        or stage1_state.block[i - 15 * (j + 1)].box_color == 3 or stage1_state.block[i - 15 * (j + 1)].box_color == 4 \
+                                        or stage1_state.block[i - 15 * (j + 1)].box_color == 5 or stage1_state.block[i - 15 * (j + 1)].box_color == 6 \
+                                        or stage1_state.block[i - 15 * (j + 1)].box_color == 7:
                                     if stage1_state.block[i - 15 * (j + 1)].box_color == 1 or stage1_state.block[i - 15 * (j + 1)].box_color == 2 \
                                             or stage1_state.block[i - 15 * (j + 1)].box_color == 3:
                                         stage1_state.block[i - 15 * (j + 1)].box_broken = 0
@@ -134,7 +146,9 @@ class PopState():
                                 bubble.range_left = j
                                 break
                             else:
-                                if stage2_state.block[i - j - 1].box_color != 0:
+                                if stage2_state.block[i - j - 1].box_color == 1 or stage2_state.block[i - j - 1].box_color == 2 \
+                                        or stage2_state.block[i - j - 1].box_color == 3 or stage2_state.block[i - j - 1].box_color == 4\
+                                        or stage2_state.block[i - j - 1].box_color == 5:
                                     if stage2_state.block[i - j - 1].box_color == 1 or stage2_state.block[i - j - 1].box_color == 2 \
                                             or stage2_state.block[i - j - 1].box_color == 3:
                                         stage2_state.block[i - j - 1].box_broken = 0
@@ -149,7 +163,9 @@ class PopState():
                                 bubble.range_right = j
                                 break
                             else:
-                                if stage2_state.block[i + j + 1].box_color != 0:
+                                if stage2_state.block[i + j + 1].box_color == 1 or stage2_state.block[i + j + 1].box_color == 2 \
+                                        or stage2_state.block[i + j + 1].box_color == 3 or stage2_state.block[i + j + 1].box_color == 4\
+                                        or stage2_state.block[i + j + 1].box_color == 5:
                                     if stage2_state.block[i + j + 1].box_color == 1 or stage2_state.block[i + j + 1].box_color == 2 \
                                             or stage2_state.block[i + j + 1].box_color == 3:
                                         stage2_state.block[i + j + 1].box_broken = 0
@@ -158,7 +174,9 @@ class PopState():
 
                         for j in range(bubble.range_down):
                             if i + 15 * (j + 1) < 195:
-                                if stage2_state.block[i + 15 * (j + 1)].box_color != 0:
+                                if stage2_state.block[i + 15 * (j + 1)].box_color == 1 or stage2_state.block[i + 15 * (j + 1)].box_color == 2 \
+                                        or stage2_state.block[i + 15 * (j + 1)].box_color == 3 or stage2_state.block[i + 15 * (j + 1)].box_color == 4 \
+                                        or stage2_state.block[i + 15 * (j + 1)].box_color == 5:
                                     if stage2_state.block[i + 15 * (j + 1)].box_color == 1 or stage2_state.block[i + 15 * (j + 1)].box_color == 2 \
                                             or stage2_state.block[i + 15 * (j + 1)].box_color == 3:
                                         stage2_state.block[i + 15 * (j + 1)].box_broken = 0
@@ -170,7 +188,9 @@ class PopState():
 
                         for j in range(bubble.range_up):
                             if i - 15 * (j + 1) >= 0:
-                                if stage2_state.block[i - 15 * (j + 1)].box_color != 0:
+                                if stage2_state.block[i - 15 * (j + 1)].box_color == 1 or stage2_state.block[i - 15 * (j + 1)].box_color == 2 \
+                                        or stage2_state.block[i - 15 * (j + 1)].box_color == 3 or stage2_state.block[i - 15 * (j + 1)].box_color == 4 \
+                                        or stage2_state.block[i - 15 * (j + 1)].box_color == 5:
                                     if stage2_state.block[i - 15 * (j + 1)].box_color == 1 or stage2_state.block[i - 15 * (j + 1)].box_color == 2 \
                                             or stage2_state.block[i - 15 * (j + 1)].box_color == 3:
                                         stage2_state.block[i - 15 * (j + 1)].box_broken = 0
