@@ -100,7 +100,7 @@ def enter():
 
     bazzi = Bazzi()
     bazzi.stage = 2
-    game_world.add_object(bazzi, 2)
+    game_world.add_object(bazzi, 3)
     pass
 
 

@@ -13,6 +13,15 @@ FRAMES_PER_ACTION = 8
 
 POP_TIMER = range(1)
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
+
 
 class IdleState():
     @staticmethod
@@ -297,6 +306,9 @@ class Bubble:
         if Bubble.image == None:
             Bubble.image = load_image('resource/Bubble.png')
             Bubble.pop_image = load_image('resource/BubbleFlow.png')
+
+    def get_bb(self):
+        return self.x, self.y, self.x + 40, self.y + 40
 
     def add_event(self, event):
         self.event_que.insert(0, event)

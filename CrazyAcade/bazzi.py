@@ -178,7 +178,7 @@ class Bazzi:
                                 or stage1_state.block[i].box_color == 10 or stage1_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(stage1_state.block[i].block_x, stage1_state.block[i].block_y + 10, self.bubble_range, self.stage)
-                            game_world.add_object(bubble, 1)
+                            game_world.add_object(bubble, 2)
                             print('one two three four bubble bubble')
                             break
         elif self.stage == 2:
@@ -189,7 +189,7 @@ class Bazzi:
                                 or stage2_state.block[i].box_color == 10 or stage2_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(stage2_state.block[i].block_x, stage2_state.block[i].block_y + 10, self.bubble_range, self.stage)
-                            game_world.add_object(bubble, 1)
+                            game_world.add_object(bubble, 2)
                             print('one two three four bubble bubble')
                             break
         elif self.stage == 3:
@@ -200,7 +200,7 @@ class Bazzi:
                                 or boss_stage.block[i].box_color == 10 or boss_stage.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(boss_stage.block[i].block_x, boss_stage.block[i].block_y + 10, self.bubble_range, self.stage)
-                            game_world.add_object(bubble, 1)
+                            game_world.add_object(bubble, 2)
                             print('one two three four bubble bubble')
                             break
 
