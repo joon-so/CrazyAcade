@@ -4,7 +4,7 @@ import game_world
 import game_framework
 # enemy1 Run Speed
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 1500cm
-RUN_SPEED_KMPH = 0.15 # Km / Hour
+RUN_SPEED_KMPH = 7 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -29,16 +29,16 @@ class RunState():
     def do(enemy):
         if enemy.dir == 1:
             enemy.frame_y = 170
-            enemy.y -= RUN_SPEED_PPS
+            enemy.y -= RUN_SPEED_PPS * game_framework.frame_time
         elif enemy.dir == 2:
             enemy.frame_y = 136
-            enemy.x -= RUN_SPEED_PPS
+            enemy.x -= RUN_SPEED_PPS * game_framework.frame_time
         elif enemy.dir == 3:
             enemy.frame_y = 102
-            enemy.x += RUN_SPEED_PPS
+            enemy.x += RUN_SPEED_PPS * game_framework.frame_time
         elif enemy.dir == 4:
             enemy.frame_y = 68
-            enemy.y += RUN_SPEED_PPS
+            enemy.y += RUN_SPEED_PPS * game_framework.frame_time
 
         enemy.frame_x = (enemy.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
 

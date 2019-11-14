@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 import game_world
 import game_framework
 # Bubble Action Speed
@@ -6,7 +7,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 9
 
-BLOCK_POP = range(1)
+BLOCK_POP, MAKE_ITEM = range(2)
 
 class IdleState():
     @staticmethod
@@ -19,7 +20,8 @@ class IdleState():
 
     @staticmethod
     def do(block):
-        if block.box_color != 0:
+        if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
+                or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
             if block.box_broken == 0:
                 print('broke')
                 block.add_event(BLOCK_POP)
@@ -41,6 +43,8 @@ class IdleState():
             block.stage1_house3.clip_draw(0, 0, 41, 57, block.block_x, block.block_y + 7)
         elif block.box_color == 7:
             block.stage1_tree.clip_draw(0, 0, 40, 70, block.block_x, block.block_y + 12)
+        elif block.box_color == 9:
+            block.item.clip_draw(0, 0, 40, 40, block.block_x, block.block_y + 7)
     pass
 
 
@@ -55,15 +59,19 @@ class BrokeState:
 
     @staticmethod
     def do(block):
-        block.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * 1.5
+        block.timer -= game_framework.frame_time * 12
         if block.timer <= 0:
             block.box_frame_x = (block.box_frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
             block.timer = 1
             if int(block.box_frame_x) % 3 == 0:
                 block.box_frame_y -= 1
                 if block.box_frame_y == 0:
-                    block.box_color = 0
-                    game_world.remove_object(block)
+                    #if random.randint(0, 1) == 1:
+                    block.box_color = 9
+                    block.item = load_image('resource/Item.png')
+                    block.add_event(MAKE_ITEM)
+                    #block.box_color = 0
+                    #game_world.remove_object(block)
                     print('Delete Block')
         pass
 
@@ -86,7 +94,8 @@ class BrokeState:
     pass
 
 next_state_table = {
-    IdleState: {BLOCK_POP: BrokeState}
+    IdleState: {BLOCK_POP: BrokeState},
+    BrokeState: {MAKE_ITEM: IdleState}
 }
 
 
@@ -96,6 +105,7 @@ class Block:
             block_x, block_y, box_color, box_broken
         self.box_frame_x, self.box_frame_y = 0, 2
         self.timer = 1
+        self.item = None
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -108,6 +118,7 @@ class Block:
         # 6: blue house
         # 7: tree
         # 8: bubble
+        # 9,10,11 : item
         if self.box_color == 1:
             self.stage1_box2 = load_image('resource/vilige_Box_1_M1.png')
         elif self.box_color == 2:

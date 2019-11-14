@@ -6,7 +6,7 @@ from bazzi import Bazzi
 
 # Boss Run Speed
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30cm
-RUN_SPEED_KMPH = 0.2 # Km / Hour
+RUN_SPEED_KMPH = 9 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -30,16 +30,16 @@ class RunState():
     def do(boss):
         if boss.dir == 1:
             boss.frame_y = 2484
-            boss.y += RUN_SPEED_PPS
+            boss.y += RUN_SPEED_PPS * game_framework.frame_time
         elif boss.dir == 2:
             boss.frame_y = 2277
-            boss.y -= RUN_SPEED_PPS
+            boss.y -= RUN_SPEED_PPS * game_framework.frame_time
         if boss.dir == 3:
             boss.frame_y = 2070
-            boss.x += RUN_SPEED_PPS
+            boss.x += RUN_SPEED_PPS * game_framework.frame_time
         elif boss.dir == 4:
             boss.frame_y = 1863
-            boss.x -= RUN_SPEED_PPS
+            boss.x -= RUN_SPEED_PPS * game_framework.frame_time
 
         boss.frame_x = (boss.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         boss.x = clamp(50, boss.x, 590)

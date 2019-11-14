@@ -26,7 +26,7 @@ class IdleState():
     @staticmethod
     def do(bubble):
         bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-        bubble.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+        bubble.timer -= game_framework.frame_time * 12
         if bubble.timer <= 0:
             print('Pop Bubble')
             bubble.add_event(POP_TIMER)
@@ -50,12 +50,12 @@ class PopState():
 
     @staticmethod
     def do(bubble):
-        bubble.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+        bubble.timer -= game_framework.frame_time * 15
         if bubble.timer < 4:
             bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         else:
             bubble.frame = 0
-        if bubble.timer <= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time:
+        if bubble.timer <= 1:
             game_world.remove_object(bubble)
             print('Delete Bubble')
 
@@ -265,7 +265,7 @@ class Bubble:
     image = None
     pop_image = None
     def __init__(self, x = 9999, y = 9999, bubble_range = 0, stage = 0):
-        self.timer = 20
+        self.timer = 15
         self.frame = 0
         self.range_right, self.range_left, self.range_up, self.range_down = bubble_range, bubble_range, bubble_range, bubble_range
         self.x, self.y = x, y

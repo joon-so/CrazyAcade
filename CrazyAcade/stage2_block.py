@@ -51,7 +51,7 @@ class BrokeState:
 
     @staticmethod
     def do(block):
-        block.timer -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * 1.5
+        block.timer -= game_framework.frame_time * 12
         if block.timer <= 0:
             block.box_frame_x = (block.box_frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
             block.timer = 1
