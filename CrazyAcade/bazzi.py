@@ -34,6 +34,16 @@ key_event_table = {
 }
 
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
+
+
 class IdleState():
     @staticmethod
     def enter(bazzi, event):
@@ -93,6 +103,7 @@ class RunState():
         elif event == DOWN_DOWN:
             bazzi.bazzi_dir = 4
             bazzi.bazzi_dir_y -= RUN_SPEED_PPS
+
         elif event == RIGHT_UP:
             bazzi.bazzi_dir_x -= RUN_SPEED_PPS
         elif event == LEFT_UP:
@@ -126,8 +137,24 @@ class RunState():
 
         bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time
         bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time
+        for block in game_world.objects[0]:
+            if collide(bazzi, block):
+                if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
+                        or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
+                    print('collide')
+                    # bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time * 3
+                    # bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time * 3
+                    # break
+                    if bazzi.bazzi_dir_x != 0:
+                        bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time
+                    if bazzi.bazzi_dir_y != 0:
+                        bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time
+                    break
+                        #bazzi.y = block.block_y + 50
+        #bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time
+        #bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time
         bazzi.x = clamp(39, bazzi.x, 600)
-        bazzi.y = clamp(70, bazzi.y, 560)
+        bazzi.y = clamp(70, bazzi.y, 565)
         #Crush Check
 
     @staticmethod
@@ -154,11 +181,11 @@ next_state_table = {
 
 
 class Bazzi:
-    x = 40
-    y = 560
+    # x = 40
+    # y = 560
     def __init__(self):
         self.bazzi_dir = 0
-        #self.x, self.y = 40, 560
+        self.x, self.y = 0, 0
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
         self.stage = 0
@@ -173,7 +200,7 @@ class Bazzi:
         if self.stage == 1:
             for i in range(195):
                 if stage1_state.block[i].block_x <= self.x + 20.1 < stage1_state.block[i].block_x + 40.2:
-                    if stage1_state.block[i].block_y <= self.y - 10 < stage1_state.block[i].block_y + 40:
+                    if stage1_state.block[i].block_y <= self.y - 7 < stage1_state.block[i].block_y + 40:
                         if stage1_state.block[i].box_color == 0 or stage1_state.block[i].box_color == 9\
                                 or stage1_state.block[i].box_color == 10 or stage1_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -184,7 +211,7 @@ class Bazzi:
         elif self.stage == 2:
             for i in range(195):
                 if stage2_state.block[i].block_x <= self.x + 20.1 < stage2_state.block[i].block_x + 40.2:
-                    if stage2_state.block[i].block_y <= self.y - 10 < stage2_state.block[i].block_y + 40:
+                    if stage2_state.block[i].block_y <= self.y - 7 < stage2_state.block[i].block_y + 40:
                         if stage2_state.block[i].box_color == 0 or stage2_state.block[i].box_color == 9\
                                 or stage2_state.block[i].box_color == 10 or stage2_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -195,7 +222,7 @@ class Bazzi:
         elif self.stage == 3:
             for i in range(195):
                 if boss_stage.block[i].block_x <= self.x + 20.1 < boss_stage.block[i].block_x + 40.2:
-                    if boss_stage.block[i].block_y <= self.y - 10 < boss_stage.block[i].block_y + 40:
+                    if boss_stage.block[i].block_y <= self.y - 7 < boss_stage.block[i].block_y + 40:
                         if boss_stage.block[i].box_color == 0 or boss_stage.block[i].box_color == 9\
                                 or boss_stage.block[i].box_color == 10 or boss_stage.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -203,6 +230,9 @@ class Bazzi:
                             game_world.add_object(bubble, 2)
                             print('one two three four bubble bubble')
                             break
+
+    def get_bb(self):
+        return self.x - 14, self.y - 27, self.x + 14, self.y - 7
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -217,6 +247,7 @@ class Bazzi:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:

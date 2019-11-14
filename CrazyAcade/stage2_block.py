@@ -129,6 +129,9 @@ class Block:
         elif self.box_color == 5:
             self.stage2_box5 = load_image('resource/pirate_Box_4.png')
 
+    def get_bb(self):
+        return self.block_x - 20, self.block_y - 20, self.block_x + 20, self.block_y + 20
+
     def add_event(self, event):
         self.event_que.insert(0, event)
         if len(self.event_que) > 0:
@@ -142,3 +145,4 @@ class Block:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())

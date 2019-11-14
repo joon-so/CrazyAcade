@@ -110,6 +110,7 @@ def enter():
 
     bazzi = Bazzi()
     bazzi.stage = 1
+    bazzi.x, bazzi.y = 40, 560
     game_world.add_object(bazzi, 3)
     pass
 
