@@ -13,6 +13,7 @@ RUN_SPEED_KMPH = 20.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
 # Bazzi Action Speed
 TIME_PER_ACTION = 0.3
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -142,18 +143,21 @@ class RunState():
                 if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
                         or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
                     print('collide')
-                    # bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time * 3
-                    # bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time * 3
-                    # break
                     if bazzi.bazzi_dir_x != 0:
                         bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time
                     if bazzi.bazzi_dir_y != 0:
                         bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time
                     break
-                        #bazzi.y = block.block_y + 50
-        #bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time
-        #bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time
-        bazzi.x = clamp(39, bazzi.x, 600)
+                elif block.box_color == 10:
+                    bazzi.bubble_range += 1
+                    block.box_color = 0
+                    break
+                elif block.box_color == 11:
+                    #RUN_SPEED_KMPH += 20
+                    block.box_color = 0
+                    break
+
+        bazzi.x = clamp(35, bazzi.x, 600)
         bazzi.y = clamp(70, bazzi.y, 565)
         #Crush Check
 
@@ -189,7 +193,7 @@ class Bazzi:
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
         self.stage = 0
-        self.bubble_range = 2
+        self.bubble_range = 1
         self.frame_x, self.frame_y = 0, 420
         self.image = load_image('resource/Character1_edit.png')
         self.event_que = []
@@ -232,7 +236,7 @@ class Bazzi:
                             break
 
     def get_bb(self):
-        return self.x - 14, self.y - 27, self.x + 14, self.y - 7
+        return self.x - 13, self.y - 27, self.x + 13, self.y - 7
 
     def add_event(self, event):
         self.event_que.insert(0, event)
