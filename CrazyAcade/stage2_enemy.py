@@ -39,6 +39,8 @@ class RunState():
         elif enemy.dir == 4:
             enemy.frame_y = 78
             enemy.y += RUN_SPEED_PPS *game_framework.frame_time
+        enemy.x = clamp(40, enemy.x, 600)
+        enemy.y = clamp(60, enemy.y, 560)
 
         enemy.frame_x = (enemy.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
 
