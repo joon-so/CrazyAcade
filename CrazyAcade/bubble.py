@@ -34,6 +34,12 @@ class IdleState():
 
     @staticmethod
     def do(bubble):
+        # 겹칠시 터짐
+        # for bub in game_world.objects[2]:
+        #     if collide(bubble, bub):
+        #         if bub != bubble:
+        #             bub.add_event(POP_TIMER)
+
         bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         bubble.timer -= game_framework.frame_time * 12
         if bubble.timer <= 0:
