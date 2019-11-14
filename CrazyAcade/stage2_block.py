@@ -1,5 +1,6 @@
 from pico2d import *
 import game_world
+import random
 import game_framework
 # Bubble Action Speed
 TIME_PER_ACTION = 0.5
@@ -40,6 +41,10 @@ class IdleState():
             block.stage2_box5.clip_draw(0, 0, 40, 70, block.block_x, block.block_y + 15)
         elif block.box_color == 9:
             block.item.clip_draw(0, 0, 40, 40, block.block_x, block.block_y + 7)
+        elif block.box_color == 10:
+            block.item.clip_draw(40, 0, 40, 40, block.block_x, block.block_y + 7)
+        elif block.box_color == 11:
+            block.item.clip_draw(80, 0, 40, 40, block.block_x, block.block_y + 7)
     pass
 
 
@@ -61,13 +66,19 @@ class BrokeState:
             if int(block.box_frame_x) % 3 == 0:
                 block.box_frame_y -= 1
                 if block.box_frame_y == 0:
-                    #if random.randint(0, 1) == 1:
-                    block.box_color = 9
-                    block.item = load_image('resource/Item.png')
+                    chance = random.randint(2, 11)
+                    if chance == 9:
+                        block.box_color = 9
+                        block.item = load_image('resource/Item.png')
+                    elif chance == 10:
+                        block.box_color = 10
+                        block.item = load_image('resource/Item.png')
+                    elif chance == 11:
+                        block.box_color = 11
+                        block.item = load_image('resource/Item.png')
+                    else:
+                        block.box_color = 0
                     block.add_event(MAKE_ITEM)
-                    #block.box_color = 0
-                    #game_world.remove_object(block)
-                    print('Delete Block')
         pass
 
     @staticmethod
