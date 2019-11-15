@@ -136,24 +136,24 @@ class RunState():
             bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
             bazzi.frame_y = 420
 
-        bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time
-        bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time
+        bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
+        bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
         for block in game_world.objects[0]:
             if collide(bazzi, block):
                 if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
                         or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
                     print('collide')
                     if bazzi.bazzi_dir_x != 0:
-                        bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time
+                        bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
                     if bazzi.bazzi_dir_y != 0:
-                        bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time
+                        bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
                     break
                 elif block.box_color == 10:
                     bazzi.bubble_range += 1
                     block.box_color = 0
                     break
                 elif block.box_color == 11:
-                    #RUN_SPEED_KMPH += 20
+                    bazzi.speed += 0.2
                     block.box_color = 0
                     break
 
@@ -194,6 +194,7 @@ class Bazzi:
         self.bazzi_dir_y = 0
         self.stage = 0
         self.bubble_range = 1
+        self.speed = 1
         self.frame_x, self.frame_y = 0, 420
         self.image = load_image('resource/Character1_edit.png')
         self.event_que = []
@@ -236,7 +237,7 @@ class Bazzi:
                             break
 
     def get_bb(self):
-        return self.x - 13, self.y - 27, self.x + 13, self.y - 7
+        return self.x - 13, self.y - 27, self.x + 13, self.y - 10
 
     def add_event(self, event):
         self.event_que.insert(0, event)
