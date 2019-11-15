@@ -43,7 +43,8 @@ class IdleState():
         bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         bubble.timer -= game_framework.frame_time * 12
         if bubble.timer <= 0:
-            print('Pop Bubble')
+            #print('Pop Bubble')
+            bazzi.Bazzi.bubble_limit += 1
             bubble.add_event(POP_TIMER)
 
     @staticmethod

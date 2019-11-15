@@ -1,7 +1,7 @@
 from pico2d import *
 
 import game_world
-import  game_framework
+import game_framework
 from bazzi import Bazzi
 
 # Boss Run Speed
