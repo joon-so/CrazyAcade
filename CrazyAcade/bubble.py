@@ -13,8 +13,7 @@ FRAMES_PER_ACTION = 8
 
 POP_TIMER = range(1)
 
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
+def collide(left_a, bottom_a, right_a, top_a, b):
     left_b, bottom_b, right_b, top_b = b.get_bb()
     if left_a > right_b: return False
     if right_a < left_b: return False
@@ -43,7 +42,6 @@ class IdleState():
         bubble.frame = (bubble.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         bubble.timer -= game_framework.frame_time * 12
         if bubble.timer <= 0:
-            #print('Pop Bubble')
             bazzi.Bazzi.bubble_limit += 1
             bubble.add_event(POP_TIMER)
 
@@ -57,7 +55,6 @@ class PopState():
     @staticmethod
     def enter(bubble, event):
         bubble.timer = 8
-        print('Pop')
         pass
 
     @staticmethod
@@ -73,11 +70,15 @@ class PopState():
             bubble.frame = 0
         if bubble.timer <= 1:
             game_world.remove_object(bubble)
-            print('Delete Bubble')
 
     @staticmethod
     def draw(bubble):
         bubble.pop_image.clip_draw(int(bubble.frame) * 40, 320, 40, 40, bubble.x, bubble.y - 7)
+        # Delete Enemy
+        for enemy in game_world.objects[1]:
+            if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, enemy):
+                game_world.remove_object(enemy)
+                break
         if bubble.stage == 1:
             for i in range(195):
                 if stage1_state.block[i].block_x <= bubble.x < stage1_state.block[i].block_x + 40.2:
@@ -269,27 +270,46 @@ class PopState():
         for i in range(bubble.range_left):
             if i == bubble.range_left - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
+                # Delete Enemy
+                for enemy in game_world.objects[1]:
+                    if collide(bubble.x - 20.1, bubble.y - 28, bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y + 12, enemy):
+                        game_world.remove_object(enemy)
+                        break
             else:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 0, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
 
         for i in range(bubble.range_right):
             if i == bubble.range_right - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
+                # Delete Enemy
+                for enemy in game_world.objects[1]:
+                    if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, enemy):
+                        game_world.remove_object(enemy)
+                        break
             else:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 40, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
 
         for i in range(bubble.range_down):
             if i == bubble.range_down - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
+                # Delete Enemy
+                for enemy in game_world.objects[1]:
+                    if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, enemy):
+                        game_world.remove_object(enemy)
+                        break
             else:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 80, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
 
         for i in range(bubble.range_up):
             if i == bubble.range_up - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
+                # Delete Enemy
+                for enemy in game_world.objects[1]:
+                    if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, enemy):
+                        game_world.remove_object(enemy)
+                        break
             else:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 120, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
-    pass
 
 
 next_state_table = {
@@ -314,8 +334,8 @@ class Bubble:
             Bubble.image = load_image('resource/Bubble.png')
             Bubble.pop_image = load_image('resource/BubbleFlow.png')
 
-    def get_bb(self):
-        return self.x, self.y, self.x + 40, self.y + 40
+    def get_bb(self, x_1, y_1, x_2, y_2):
+        return x_1, y_1, x_2, y_2
 
     def add_event(self, event):
         self.event_que.insert(0, event)

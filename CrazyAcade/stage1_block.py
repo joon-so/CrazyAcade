@@ -23,7 +23,6 @@ class IdleState():
         if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
                 or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
             if block.box_broken == 0:
-                print('broke')
                 block.add_event(BLOCK_POP)
         pass
 
@@ -83,7 +82,6 @@ class BrokeState:
                     else:
                         block.box_color = 0
                     block.add_event(MAKE_ITEM)
-                    print('Delete Block')
         pass
 
     @staticmethod
@@ -161,4 +159,4 @@ class Block:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
