@@ -94,7 +94,7 @@ def enter():
     x, y, dir = 480, 310, 2
     enemy.append(Enemy(x, y, dir))
 
-    x, y, dir = 362, 480, 1
+    x, y, dir = 362, 450, 1
     enemy.append(Enemy(x, y, dir))
     game_world.add_objects(enemy, 1)
 

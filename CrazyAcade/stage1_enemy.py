@@ -36,6 +36,12 @@ class RunState():
 
     @staticmethod
     def do(enemy):
+        # 일정 시간 경과 시 랜덤으로 방향 변경
+        enemy.block_count += game_framework.frame_time
+        if int(enemy.block_count) == 3:
+            enemy.dir = random.randint(1, 4)
+            enemy.block_count = 0
+
         if enemy.dir == 1:
             enemy.frame_y = 170
             enemy.y -= RUN_SPEED_PPS * game_framework.frame_time
@@ -52,11 +58,6 @@ class RunState():
         # 벽돌 충돌체크
         for block in game_world.objects[0]:
             if collide(enemy, block):
-                enemy.block_count += game_framework.frame_time
-                # 일정 시간 경과 시 랜덤으로 방향 변경
-                if int(enemy.block_count) == 3:
-                    enemy.dir = random.randint(1, 4)
-                    enemy.block_count = 0
                 # 벽돌 충돌시 랜덤으로 방향 변경
                 if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
                         or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
