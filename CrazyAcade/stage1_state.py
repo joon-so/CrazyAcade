@@ -148,6 +148,8 @@ def handle_events():
     for event in events:
         if event.key == SDLK_2:
             game_framework.change_state(stage2_state)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
             game_world.remove_object(bazzi)
             for n in range(len(block)):
                 game_world.remove_object(block[n])

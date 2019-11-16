@@ -194,7 +194,6 @@ class RunState():
         bazzi.image.clip_draw(int(bazzi.frame_x) * 70, int(bazzi.frame_y), 70, 70, bazzi.x, bazzi.y)
         if Bazzi.in_bubble == 1:
             bazzi.add_event(BUBBLE_TIME)
-    pass
 
 
 class DeathState():
