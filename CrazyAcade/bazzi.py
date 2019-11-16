@@ -19,7 +19,7 @@ TIME_PER_ACTION = 0.3
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 4
 
-RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, G, H = range(10)
+RIGHT_DOWN, LEFT_DOWN, UP_DOWN, DOWN_DOWN, RIGHT_UP, LEFT_UP, UP_UP, DOWN_UP, G, H, BUBBLE_TIME, ESCAPE_TIME = range(12)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_d): RIGHT_DOWN,
@@ -83,11 +83,20 @@ class IdleState():
             bazzi.frame_y = 490
         elif bazzi.bazzi_dir == 4:
             bazzi.frame_y = 420
+        # collide enemy check
+        for enemy in game_world.objects[2]:
+            if collide(bazzi, enemy):
+                Bazzi.in_bubble = 1
+                bazzi.frame_x = 0
+                bazzi.real_death = 1
+                bazzi.frame_y = 70
+                bazzi.death_animation_time = 0.025
 
     @staticmethod
     def draw(bazzi):
         bazzi.image.clip_draw(0, bazzi.frame_y, 70, 70, bazzi.x, bazzi.y)
-    pass
+        if Bazzi.in_bubble == 1:
+            bazzi.add_event(BUBBLE_TIME)
 
 
 class RunState():
@@ -140,7 +149,7 @@ class RunState():
 
         bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
         bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
-        # collide check
+        # collide block check
         for block in game_world.objects[0]:
             if collide(bazzi, block):
                 if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
@@ -163,6 +172,19 @@ class RunState():
                     block.box_color = 0
                     break
 
+        # collide enemy check
+        for enemy in game_world.objects[2]:
+            if collide(bazzi, enemy):
+                if bazzi.bazzi_dir_x != 0:
+                    bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
+                if bazzi.bazzi_dir_y != 0:
+                    bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
+                Bazzi.in_bubble = 1
+                bazzi.frame_x = 0
+                bazzi.real_death = 1
+                bazzi.frame_y = 70
+                bazzi.death_animation_time = 0.025
+
         bazzi.x = clamp(35, bazzi.x, 600)
         bazzi.y = clamp(70, bazzi.y, 565)
         #Crush Check
@@ -170,33 +192,92 @@ class RunState():
     @staticmethod
     def draw(bazzi):
         bazzi.image.clip_draw(int(bazzi.frame_x) * 70, int(bazzi.frame_y), 70, 70, bazzi.x, bazzi.y)
+        if Bazzi.in_bubble == 1:
+            bazzi.add_event(BUBBLE_TIME)
     pass
 
 
 class DeathState():
-    pass
+    @staticmethod
+    def enter(bazzi, event):
+        if bazzi.bazzi_dir_x != 0:
+            bazzi.x -= bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
+        if bazzi.bazzi_dir_y != 0:
+            bazzi.y -= bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
+        bazzi.bazzi_dir_y = 0
+        bazzi.bazzi_dir_x = 0
+        if bazzi.real_death == 0:
+            bazzi.frame_x = 0
+
+    @staticmethod
+    def exit(bazzi, event):
+        if event == H:
+            bazzi.real_death = 2
+            bazzi.frame_x = 0
+            bazzi.death_animation_time = 0.025
+
+    @staticmethod
+    def do(bazzi):
+        bazzi.death_animation_time -= game_framework.frame_time
+        if Bazzi.in_bubble == 1:
+            if bazzi.death_animation_time <= 0:
+                if bazzi.real_death == 0:
+                    bazzi.frame_y = 210
+                    bazzi.frame_x = bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+                    bazzi.death_animation_time = 0.25
+                    if int(bazzi.frame_x) == 4:
+                        bazzi.frame_x = 0
+                        bazzi.real_death = 1
+                        bazzi.frame_y = 70
+
+                elif bazzi.real_death == 1:
+                    bazzi.frame_x = bazzi.frame_x + 5 * ACTION_PER_TIME * game_framework.frame_time
+                    bazzi.death_animation_time = 0.025
+                    if int(bazzi.frame_x) > 5:
+                        bazzi.frame_x = 5
+
+                elif bazzi.real_death == 2:
+                    bazzi.frame_y = 140
+                    if bazzi.death_animation_time <= 0:
+                        bazzi.frame_x = bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+                        bazzi.death_animation_time = 0.025
+
+    @staticmethod
+    def draw(bazzi):
+        if bazzi.real_death == 2:
+            if int(bazzi.frame_x) == 4:
+                Bazzi.in_bubble = 0
+                bazzi.real_death = 0
+                bazzi.death_animation_time = 0.25
+                bazzi.bazzi_dir = 0
+                bazzi.frame_y = 420
+                bazzi.add_event(ESCAPE_TIME)
+        bazzi.image.clip_draw(int(bazzi.frame_x) * 70, int(bazzi.frame_y), 70, 70, bazzi.x, bazzi.y)
 
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, UP_UP: RunState, DOWN_UP: RunState,
                 RIGHT_DOWN: RunState, LEFT_DOWN: RunState, UP_DOWN: RunState, DOWN_DOWN: RunState,
-                G: IdleState},
+                G: IdleState, H: IdleState, BUBBLE_TIME: DeathState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, UP_UP: IdleState, DOWN_UP: IdleState,
                LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, UP_DOWN: IdleState, DOWN_DOWN: IdleState,
-               G: RunState}
-    #DeathState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState,
-                 #LEFT_UP: RunState, RIGHT_UP: RunState,
-                 #G: IdleState}
+               G: RunState, H: RunState, BUBBLE_TIME: DeathState},
+    DeathState: {RIGHT_UP: DeathState, LEFT_UP: DeathState, UP_UP: DeathState, DOWN_UP: DeathState,
+               LEFT_DOWN: DeathState, RIGHT_DOWN: DeathState, UP_DOWN: DeathState, DOWN_DOWN: DeathState,
+               G: DeathState, H: DeathState, ESCAPE_TIME: IdleState}
 }
 
 
 class Bazzi:
     bubble_limit = 1
+    in_bubble = 0
     def __init__(self):
         self.bazzi_dir = 0
         self.x, self.y = 0, 0
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
+        self.death_animation_time = 0.25
+        self.real_death = 0
         self.stage = 0
         self.bubble_count = 0
         self.bubble_range = 1
