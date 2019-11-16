@@ -75,10 +75,12 @@ class PopState():
     def draw(bubble):
         bubble.pop_image.clip_draw(int(bubble.frame) * 40, 320, 40, 40, bubble.x, bubble.y - 7)
         # Delete Enemy
-        for enemy in game_world.objects[1]:
+        for enemy in game_world.objects[2]:
             if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, enemy):
                 game_world.remove_object(enemy)
                 break
+
+        # bubble bomb range check
         if bubble.stage == 1:
             for i in range(195):
                 if stage1_state.block[i].block_x <= bubble.x < stage1_state.block[i].block_x + 40.2:
@@ -267,12 +269,13 @@ class PopState():
 
                         break
 
+        # Bomb animation
         for i in range(bubble.range_left):
             if i == bubble.range_left - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 160, 40, 40, bubble.x - 40.2 * (i + 1), bubble.y - 7)
                 # Delete Enemy
-                for enemy in game_world.objects[1]:
-                    if collide(bubble.x - 20.1, bubble.y - 28, bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y + 12, enemy):
+                for enemy in game_world.objects[2]:
+                    if collide(bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y - 28, bubble.x - 20.1, bubble.y + 12, enemy):
                         game_world.remove_object(enemy)
                         break
             else:
@@ -282,7 +285,7 @@ class PopState():
             if i == bubble.range_right - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 200, 40, 40, bubble.x + 40.2 * (i + 1), bubble.y - 7)
                 # Delete Enemy
-                for enemy in game_world.objects[1]:
+                for enemy in game_world.objects[2]:
                     if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, enemy):
                         game_world.remove_object(enemy)
                         break
@@ -293,8 +296,8 @@ class PopState():
             if i == bubble.range_down - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 240, 40, 40, bubble.x, bubble.y - 7 - 40 * (i + 1))
                 # Delete Enemy
-                for enemy in game_world.objects[1]:
-                    if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, enemy):
+                for enemy in game_world.objects[2]:
+                    if collide(bubble.x - 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, bubble.x + 20.1, bubble.y - 28, enemy):
                         game_world.remove_object(enemy)
                         break
             else:
@@ -304,7 +307,7 @@ class PopState():
             if i == bubble.range_up - 1:
                 bubble.pop_image.clip_draw(int(bubble.frame) * 40, 280, 40, 40, bubble.x, bubble.y - 7 + 40 * (i + 1))
                 # Delete Enemy
-                for enemy in game_world.objects[1]:
+                for enemy in game_world.objects[2]:
                     if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, enemy):
                         game_world.remove_object(enemy)
                         break
@@ -333,9 +336,6 @@ class Bubble:
         if Bubble.image == None:
             Bubble.image = load_image('resource/Bubble.png')
             Bubble.pop_image = load_image('resource/BubbleFlow.png')
-
-    def get_bb(self, x_1, y_1, x_2, y_2):
-        return x_1, y_1, x_2, y_2
 
     def add_event(self, event):
         self.event_que.insert(0, event)

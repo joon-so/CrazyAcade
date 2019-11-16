@@ -36,7 +36,7 @@ def enter():
     game_world.add_object(bazzi, 3)
 
     boss = Boss()
-    game_world.add_object(boss, 1)
+    game_world.add_object(boss, 2)
 
     block = []
     for i in range(195):

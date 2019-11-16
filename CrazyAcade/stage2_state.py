@@ -96,7 +96,7 @@ def enter():
 
     x, y, dir = 362, 450, 1
     enemy.append(Enemy(x, y, dir))
-    game_world.add_objects(enemy, 1)
+    game_world.add_objects(enemy, 2)
 
     bazzi = Bazzi()
     bazzi.stage = 2
