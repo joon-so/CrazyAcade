@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 
 import game_world
 import game_framework
@@ -66,11 +67,14 @@ class Boss:
     def __init__(self):
         self.x, self.y = 180, 500
         self.frame_x, self.frame_y = 0, 0
-        self.dir = 4
+        self.dir = 2
         self.image = load_image('resource/Monster_Boss.png')
         self.event_que = []
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+
+    def get_bb(self):
+        return self.x - 55, self.y - 88, self.x + 55, self.y
 
     def add_event(self, event):
         self.event_que.insert(1, event)
@@ -80,3 +84,4 @@ class Boss:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())

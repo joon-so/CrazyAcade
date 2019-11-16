@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 
 import game_world
 import game_framework
@@ -15,6 +16,14 @@ FRAMES_PER_ACTION = 2
 
 DEATH = range(1)
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
 
 class RunState():
     @staticmethod
@@ -39,8 +48,42 @@ class RunState():
         elif enemy.dir == 4:
             enemy.frame_y = 68
             enemy.y += RUN_SPEED_PPS * game_framework.frame_time
-        enemy.x = clamp(35, enemy.x, 605)
-        enemy.y = clamp(60, enemy.y, 560)
+
+        # 벽돌 충돌체크
+        for block in game_world.objects[0]:
+            if collide(enemy, block):
+                enemy.block_count += game_framework.frame_time
+                # 일정 시간 경과 시 랜덤으로 방향 변경
+                if int(enemy.block_count) == 3:
+                    enemy.dir = random.randint(1, 4)
+                    enemy.block_count = 0
+                # 벽돌 충돌시 랜덤으로 방향 변경
+                if block.box_color == 1 or block.box_color == 2 or block.box_color == 3 or block.box_color == 4\
+                        or block.box_color == 5 or block.box_color == 6 or block.box_color == 7:
+                    if enemy.dir == 1:
+                        enemy.y += RUN_SPEED_PPS * game_framework.frame_time
+                    elif enemy.dir == 2:
+                        enemy.x += RUN_SPEED_PPS * game_framework.frame_time
+                    elif enemy.dir == 3:
+                        enemy.x -= RUN_SPEED_PPS * game_framework.frame_time
+                    elif enemy.dir == 4:
+                        enemy.y -= RUN_SPEED_PPS * game_framework.frame_time
+
+                    enemy.dir = random.randint(1, 4)
+                    break
+        # 맵 충돌체크
+        if int(enemy.x) <= 35:
+            while enemy.dir == 2:
+                enemy.dir = random.randint(1, 4)
+        if int(enemy.x) >= 607:
+            while enemy.dir == 3:
+                enemy.dir = random.randint(1, 4)
+        if int(enemy.y) <= 58:
+            while enemy.dir == 1:
+                enemy.dir = random.randint(1, 4)
+        if int(enemy.y) >= 551:
+            while enemy.dir == 4:
+                enemy.dir = random.randint(1, 4)
 
         enemy.frame_x = (enemy.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
 
@@ -68,8 +111,12 @@ class Enemy:
         self.dir = dir
         self.image = load_image('resource/Monster_Basic.png')
         self.event_que = []
+        self.block_count = 0
         self.cur_state = RunState
         self.cur_state.enter(self, None)
+
+    def get_bb(self):
+        return self.x - 12, self.y - 15, self.x + 12, self.y + 7
 
     def add_event(self, event):
         self.event_que.insert(1, event)
@@ -79,3 +126,4 @@ class Enemy:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())

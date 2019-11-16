@@ -1,4 +1,5 @@
 from pico2d import *
+import random
 
 import game_world
 import game_framework
@@ -71,6 +72,9 @@ class Enemy:
         self.cur_state = RunState
         self.cur_state.enter(self, None)
 
+    def get_bb(self):
+        return self.x - 14, self.y - 18, self.x + 14, self.y + 5
+
     def add_event(self, event):
         self.event_que.insert(1, event)
 
@@ -79,3 +83,4 @@ class Enemy:
 
     def draw(self):
         self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())

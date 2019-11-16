@@ -159,7 +159,7 @@ class RunState():
                     block.box_color = 0
                     break
                 elif block.box_color == 11:
-                    bazzi.speed += 0.1
+                    bazzi.speed += 0.05
                     block.box_color = 0
                     break
 
