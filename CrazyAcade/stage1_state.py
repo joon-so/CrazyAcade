@@ -1,4 +1,5 @@
 import game_framework
+import menu_state
 import stage2_state
 import random
 import game_world
@@ -21,9 +22,6 @@ enemy_count = 0
 screen_timer = 0
 screen_timer_2 = 0
 
-mouse_x, mouse_y = 0, 0
-cursor = None
-
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
 # y : bottom 148 ~ 540 top
@@ -34,7 +32,7 @@ box_broken = 0
 
 
 def enter():
-    global stage1_map, ingame_word, screen_timer, screen_timer_2, cursor
+    global stage1_map, ingame_word, screen_timer, screen_timer_2
     global bazzi, block, enemy
     global block_x, block_y, box_color, box_broken
 
@@ -44,7 +42,6 @@ def enter():
     enemy = []
     stage1_map = load_image('resource/Stage1.png')
     ingame_word = load_image('resource/InGame_Image_Word.png')
-    cursor = load_image('resource/hand_arrow.png')
 
     for n in range(195):
         if block_x > 610:
@@ -143,7 +140,7 @@ def update():
 
 
 def draw():
-    global stage1_map, ingame_word, screen_timer, screen_timer_2, cursor
+    global stage1_map, ingame_word, screen_timer, screen_timer_2
 
     hide_cursor()
     clear_canvas()
@@ -170,19 +167,22 @@ def draw():
         ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
         screen_timer_2 += game_framework.frame_time
 
-    cursor.draw_now(mouse_x + 18, mouse_y - 20)
-
     update_canvas()
 
 
 def handle_events():
-    global bazzi, block, enemy, mouse_x, mouse_y
+    global bazzi, block, enemy
     events = get_events()
     for event in events:
-        if event.type == SDL_MOUSEMOTION:
-            mouse_x, mouse_y = event.x, HEIGHT - 1 - event.y
         if event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_state(menu_state)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            for n in range(len(enemy)):
+                game_world.remove_object(enemy[n])
         elif event.key == SDLK_2:
             game_framework.change_state(stage2_state)
             Bazzi.bubble_limit = 1

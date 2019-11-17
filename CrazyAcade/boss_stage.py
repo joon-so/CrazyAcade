@@ -22,9 +22,6 @@ bazzi_running = False
 block = None
 enemy = None
 
-mouse_x, mouse_y = 0, 0
-cursor = None
-
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
 # y : bottom 148 ~ 540 top
@@ -90,9 +87,8 @@ def update():
 
 
 def draw():
-    global stage2_map, ingame_word, screen_timer, screen_timer_2, mouse_x, mouse_y, cursor
+    global stage2_map, ingame_word, screen_timer, screen_timer_2
 
-    hide_cursor()
     clear_canvas()
     screen_timer += game_framework.frame_time
     stage2_map.draw(WIDTH // 2, HEIGHT // 2)
@@ -116,20 +112,22 @@ def draw():
         ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
         screen_timer_2 += game_framework.frame_time
 
-    cursor.draw_now(mouse_x + 18, mouse_y - 20)
-
     update_canvas()
     pass
 
 
 def handle_events():
-    global bazzi, block, enemy, mouse_y, mouse_x
+    global bazzi, block, enemy
     events = get_events()
     for event in events:
-        if event.type == SDL_MOUSEMOTION:
-            mouse_x, mouse_y = event.x, HEIGHT - 1 - event.y
         if event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_state(menu_state)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            game_world.remove_object(enemy)
         elif event.key == SDLK_4:
             game_framework.change_state(menu_state)
             Bazzi.bubble_limit = 1
