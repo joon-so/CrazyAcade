@@ -94,6 +94,8 @@ class IdleState():
 
     @staticmethod
     def draw(bazzi):
+        if bazzi.life == 1:
+            bazzi.dart.clip_draw(80, 0, 40, 40, 85, 17)
         bazzi.image.clip_draw(0, bazzi.frame_y, 70, 70, bazzi.x, bazzi.y)
         if Bazzi.in_bubble == 1:
             bazzi.add_event(BUBBLE_TIME)
@@ -191,6 +193,8 @@ class RunState():
 
     @staticmethod
     def draw(bazzi):
+        if bazzi.life == 1:
+            bazzi.dart.clip_draw(80, 0, 40, 40, 85, 17)
         bazzi.image.clip_draw(int(bazzi.frame_x) * 70, int(bazzi.frame_y), 70, 70, bazzi.x, bazzi.y)
         if Bazzi.in_bubble == 1:
             bazzi.add_event(BUBBLE_TIME)
@@ -246,6 +250,8 @@ class DeathState():
 
     @staticmethod
     def draw(bazzi):
+        if bazzi.life == 1:
+            bazzi.dart.clip_draw(80, 0, 40, 40, 85, 17)
         if bazzi.real_death == 2:
             if int(bazzi.frame_x) == 4:
                 Bazzi.in_bubble = 0
@@ -286,6 +292,7 @@ class Bazzi:
         self.bubble_range = 1
         self.speed = 1
         self.frame_x, self.frame_y = 0, 420
+        self.dart = load_image('resource/Dart.png')
         self.image = load_image('resource/Character1_edit.png')
         self.event_que = []
         self.cur_state = IdleState
