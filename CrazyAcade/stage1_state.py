@@ -123,10 +123,11 @@ def enter():
 
 
 def exit():
-    global stage1_map, block_x, block_y
-    del(stage1_map)
-    del(block_x)
-    del(block_y)
+    global block_x, block_y, enemy_count, screen_timer, screen_timer_2
+    enemy_count = 0
+    screen_timer = 0
+    screen_timer_2 = 0
+    block_x, block_y = 39, 540
     pass
 
 

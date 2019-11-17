@@ -27,6 +27,8 @@ def delete_enemy(bubble, enemy):
         stage1_state.enemy_count += 1
     elif bubble.stage == 2:
         stage2_state.enemy_count += 1
+    elif bubble.stage == 3:
+        boss_stage.enemy_count += 1
     game_world.remove_object(enemy)
 
 class IdleState():
