@@ -10,12 +10,16 @@ from stage1_enemy import Enemy
 
 WIDTH, HEIGHT = 800, 600
 stage1_map = None
+ingame_word = None
 running = True
 
 bazzi = None
 block = None
 enemy = None
 
+enemy_count = 0
+screen_timer = 0
+screen_timer_2 = 0
 bazzi_running = False
 
 # x 80.4 , y 81
@@ -28,13 +32,16 @@ box_broken = 0
 
 
 def enter():
-    global stage1_map
+    global stage1_map, ingame_word, screen_timer, screen_timer_2
     global bazzi, block, enemy
     global block_x, block_y, box_color, box_broken
 
+    screen_timer = 0
+    screen_timer_2 = 0
     block = []
     enemy = []
     stage1_map = load_image('resource/Stage1.png')
+    ingame_word = load_image('resource/InGame_Image_Word.png')
 
     for n in range(195):
         if block_x > 610:
@@ -132,21 +139,20 @@ def update():
 
 
 def draw():
-    global stage1_map
+    global stage1_map, ingame_word, screen_timer, screen_timer_2
 
     clear_canvas()
+    screen_timer += game_framework.frame_time
     stage1_map.draw(WIDTH // 2, HEIGHT // 2)
 
     for game_object in game_world.all_objects():
         game_object.draw()
-    update_canvas()
 
-
-def handle_events():
-    global bazzi, block, enemy
-    events = get_events()
-    for event in events:
-        if event.key == SDLK_2:
+    if screen_timer < 2:
+        if enemy_count == 0:
+            ingame_word.clip_draw(0, 300, 405, 72, WIDTH // 2 - 50, HEIGHT // 2)
+    if screen_timer_2 > 2:
+        if enemy_count == 4:
             game_framework.change_state(stage2_state)
             Bazzi.bubble_limit = 1
             bazzi.bubble_count = 0
@@ -155,26 +161,27 @@ def handle_events():
                 game_world.remove_object(block[n])
             for n in range(len(enemy)):
                 game_world.remove_object(enemy[n])
-        elif event.key == SDLK_ESCAPE:
+    if enemy_count == 4:
+        ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
+        screen_timer_2 += game_framework.frame_time
+
+    update_canvas()
+
+
+def handle_events():
+    global bazzi, block, enemy
+    events = get_events()
+    for event in events:
+        if event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.key == SDLK_2:
+            game_framework.change_state(stage2_state)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            for n in range(len(enemy)):
+                game_world.remove_object(enemy[n])
         else:
             bazzi.handle_event(event)
-
-
-def makeBubble(x, y):
-    global stage1_block_state, stage1_block_x, stage1_block_y
-    global bubble_team
-
-    for i in range(195):
-        if stage1_block_x[i] <= x + 20.1 < stage1_block_x[i] + 40.2:
-            if stage1_block_y[i] <= y < stage1_block_y[i] + 40:
-                if stage1_block_state[i] == 0:
-                    stage1_block_state[i] = 8
-                    for k in range(195):
-                        if bubble_team[k].state == 0:
-                            bubble_team[k].state = 1
-                            bubble_team[k].x = stage1_block_x[i]
-                            bubble_team[k].y = stage1_block_y[i]
-                            break
-                else:
-                    break

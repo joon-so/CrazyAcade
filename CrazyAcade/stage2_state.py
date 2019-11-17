@@ -9,12 +9,16 @@ from stage2_enemy import Enemy
 
 WIDTH, HEIGHT = 800, 600
 stage2_map = None
+ingame_word = None
 
+enemy_count = 0
+screen_timer = 0
+screen_timer_2 = 0
 
 running = True
 bazzi = None
 block = None
-
+enemy_count = 0
 bazzi_running = False
 
 enemy = None
@@ -29,11 +33,15 @@ box_color, box_broken = 0, 0
 
 
 def enter():
-    global stage2_map
+    global stage2_map, ingame_word, screen_timer_2, screen_timer
     global bazzi, block, enemy
     global block_y, block_x, box_color, box_broken
 
+    screen_timer = 0
+    screen_timer_2 = 0
+
     stage2_map = load_image('resource/Stage2.png')
+    ingame_word = load_image('resource/InGame_Image_Word.png')
 
     enemy = []
     block = []
@@ -124,13 +132,32 @@ def update():
 
 
 def draw():
-    global stage2_map
+    global stage2_map, screen_timer, screen_timer_2
 
     clear_canvas()
+    screen_timer += game_framework.frame_time
     stage2_map.draw(WIDTH // 2, HEIGHT // 2)
 
     for game_object in game_world.all_objects():
         game_object.draw()
+
+    if screen_timer < 2:
+        if enemy_count == 0:
+            ingame_word.clip_draw(0, 300, 405, 72, WIDTH // 2 - 50, HEIGHT // 2)
+    if screen_timer_2 > 2:
+        if enemy_count == 4:
+            game_framework.change_state(boss_stage)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            for n in range(len(enemy)):
+                game_world.remove_object(enemy[n])
+    if enemy_count == 4:
+        ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
+        screen_timer_2 += game_framework.frame_time
+
     update_canvas()
 
 
@@ -138,14 +165,16 @@ def handle_events():
     global bazzi, block, enemy
     events = get_events()
     for event in events:
-        if event.key == SDLK_3:
+        if event.key == SDLK_ESCAPE:
+            game_framework.quit()
+        elif event.key == SDLK_3:
             game_framework.change_state(boss_stage)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
             game_world.remove_object(bazzi)
             for n in range(len(block)):
                 game_world.remove_object(block[n])
             for n in range(len(enemy)):
                 game_world.remove_object(enemy[n])
-        elif event.key == SDLK_ESCAPE:
-            game_framework.quit()
         else:
             bazzi.handle_event(event)

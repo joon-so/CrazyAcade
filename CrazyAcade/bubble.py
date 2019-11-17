@@ -22,6 +22,12 @@ def collide(left_a, bottom_a, right_a, top_a, b):
     if bottom_a > top_b: return False
     return True
 
+def delete_enemy(bubble, enemy):
+    if bubble.stage == 1:
+        stage1_state.enemy_count += 1
+    elif bubble.stage == 2:
+        stage2_state.enemy_count += 1
+    game_world.remove_object(enemy)
 
 class IdleState():
     @staticmethod
@@ -78,7 +84,7 @@ class PopState():
         # Delete Enemy
         for enemy in game_world.objects[2]:
             if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, enemy):
-                game_world.remove_object(enemy)
+                delete_enemy(bubble, enemy)
                 break
         for bazzi_check in game_world.objects[3]:
             if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, bazzi_check):
@@ -281,7 +287,7 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y - 28, bubble.x - 20.1, bubble.y + 12, enemy):
-                        game_world.remove_object(enemy)
+                        delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y - 28, bubble.x - 20.1, bubble.y + 12, bazzi_check):
@@ -296,7 +302,7 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, enemy):
-                        game_world.remove_object(enemy)
+                        delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, bazzi_check):
@@ -311,7 +317,7 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, bubble.x + 20.1, bubble.y - 28, enemy):
-                        game_world.remove_object(enemy)
+                        delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, bubble.x + 20.1, bubble.y - 28, bazzi_check):
@@ -326,7 +332,7 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, enemy):
-                        game_world.remove_object(enemy)
+                        delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, bazzi_check):
