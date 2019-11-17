@@ -24,6 +24,8 @@ enemy = None
 
 box_frame_x, box_frame_y = 0, 2
 
+mouse_x, mouse_y = 0, 0
+cursor = None
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
 # y : bottom 148 ~ 540 top
@@ -32,7 +34,7 @@ box_color, box_broken = 0, 0
 
 
 def enter():
-    global stage2_map, ingame_word, screen_timer_2, screen_timer
+    global stage2_map, ingame_word, screen_timer_2, screen_timer, cursor
     global bazzi, block, enemy
     global block_y, block_x, box_color, box_broken
 
@@ -41,6 +43,7 @@ def enter():
 
     stage2_map = load_image('resource/Stage2.png')
     ingame_word = load_image('resource/InGame_Image_Word.png')
+    cursor = load_image('resource/hand_arrow.png')
 
     enemy = []
     block = []
@@ -130,8 +133,9 @@ def update():
 
 
 def draw():
-    global stage2_map, screen_timer, screen_timer_2
+    global stage2_map, screen_timer, screen_timer_2, cursor, mouse_y, mouse_x
 
+    hide_cursor()
     clear_canvas()
     screen_timer += game_framework.frame_time
     stage2_map.draw(WIDTH // 2, HEIGHT // 2)
@@ -156,13 +160,17 @@ def draw():
         ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
         screen_timer_2 += game_framework.frame_time
 
+    cursor.draw_now(mouse_x + 18, mouse_y - 20)
+
     update_canvas()
 
 
 def handle_events():
-    global bazzi, block, enemy
+    global bazzi, block, enemy, mouse_y, mouse_x
     events = get_events()
     for event in events:
+        if event.type == SDL_MOUSEMOTION:
+            mouse_x, mouse_y = event.x, HEIGHT - 1 - event.y
         if event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.key == SDLK_3:

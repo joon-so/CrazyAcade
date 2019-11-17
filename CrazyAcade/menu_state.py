@@ -31,9 +31,7 @@ def exit():
 
 def update():
     global game_frame
-    game_frame = (game_frame + 1) % 2
-    delay(0.15)
-    pass
+    game_frame = (game_frame + game_framework.frame_time * 3) % 2
 
 
 def handle_events():
@@ -47,19 +45,21 @@ def handle_events():
                 game_framework.change_state(stage1_state)
             elif event.key == SDLK_h:
                 game_framework.push_state(help_state)
-            elif event.type == SDL_MOUSEMOTION:
-                mouse_x, mouse_y = event.x, HEIGHT - 1 - event.y
+        if event.type == SDL_MOUSEMOTION:
+            mouse_x, mouse_y = event.x, HEIGHT - 1 - event.y
 
 
 def draw():
     global menu, game_start, out, cursor
     global game_frame, WIDTH, HEIGHT, mouse_y, mouse_x
+    hide_cursor()
     clear_canvas()
 
     menu.draw(WIDTH // 2, HEIGHT // 2)
-    game_start.clip_draw(game_frame * 192, 0, 192, 55, 400, 195)
-    out.clip_draw(game_frame * 140, 0, 140, 55, 405, 145)
-    cursor.draw_now(mouse_x, mouse_y)
+    game_start.clip_draw(int(game_frame) * 192, 0, 192, 55, 400, 195)
+    out.clip_draw(int(game_frame) * 140, 0, 140, 55, 405, 145)
+    cursor.draw_now(mouse_x + 18, mouse_y - 20)
+
     update_canvas()
     pass
 
