@@ -189,7 +189,6 @@ class RunState():
 
         bazzi.x = clamp(35, bazzi.x, 600)
         bazzi.y = clamp(70, bazzi.y, 565)
-        #Crush Check
 
     @staticmethod
     def draw(bazzi):
