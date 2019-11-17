@@ -331,7 +331,7 @@ class Bazzi:
                             break
 
     def get_bb(self):
-        return self.x - 11, self.y - 23, self.x + 11, self.y - 10
+        return self.x - 11, self.y - 28, self.x + 11, self.y - 15
 
     def add_event(self, event):
         self.event_que.insert(0, event)

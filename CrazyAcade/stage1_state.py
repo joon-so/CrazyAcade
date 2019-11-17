@@ -20,7 +20,6 @@ enemy = None
 enemy_count = 0
 screen_timer = 0
 screen_timer_2 = 0
-bazzi_running = False
 
 # x 80.4 , y 81
 # x : left 39 ~ 601 right

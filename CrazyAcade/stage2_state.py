@@ -19,7 +19,6 @@ running = True
 bazzi = None
 block = None
 enemy_count = 0
-bazzi_running = False
 
 enemy = None
 
