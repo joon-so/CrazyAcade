@@ -2,6 +2,7 @@ from pico2d import *
 import game_world
 import game_framework
 import stage1_state
+from stage1_enemy import Enemy
 import stage2_state
 import boss_stage
 import bazzi

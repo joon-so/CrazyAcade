@@ -211,9 +211,12 @@ class DeathState():
     @staticmethod
     def exit(bazzi, event):
         if event == H:
-            bazzi.real_death = 2
-            bazzi.frame_x = 0
-            bazzi.death_animation_time = 0.025
+            if bazzi.life == 1:
+                if bazzi.real_death == 0:
+                    bazzi.real_death = 2
+                    bazzi.frame_x = 0
+                    bazzi.death_animation_time = 0.025
+                    bazzi.life -= 1
 
     @staticmethod
     def do(bazzi):
@@ -276,6 +279,7 @@ class Bazzi:
         self.bazzi_dir_x = 0
         self.bazzi_dir_y = 0
         self.death_animation_time = 0.25
+        self.life = 1
         self.real_death = 0
         self.stage = 0
         self.bubble_count = 0
@@ -291,7 +295,7 @@ class Bazzi:
         if self.stage == 1:
             for i in range(195):
                 if stage1_state.block[i].block_x <= self.x + 20.1 < stage1_state.block[i].block_x + 40.2:
-                    if stage1_state.block[i].block_y <= self.y - 7 < stage1_state.block[i].block_y + 40:
+                    if stage1_state.block[i].block_y <= self.y - 3 < stage1_state.block[i].block_y + 40:
                         if stage1_state.block[i].box_color == 0 or stage1_state.block[i].box_color == 9\
                                 or stage1_state.block[i].box_color == 10 or stage1_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -301,7 +305,7 @@ class Bazzi:
         elif self.stage == 2:
             for i in range(195):
                 if stage2_state.block[i].block_x <= self.x + 20.1 < stage2_state.block[i].block_x + 40.2:
-                    if stage2_state.block[i].block_y <= self.y - 7 < stage2_state.block[i].block_y + 40:
+                    if stage2_state.block[i].block_y <= self.y - 3 < stage2_state.block[i].block_y + 40:
                         if stage2_state.block[i].box_color == 0 or stage2_state.block[i].box_color == 9\
                                 or stage2_state.block[i].box_color == 10 or stage2_state.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -311,7 +315,7 @@ class Bazzi:
         elif self.stage == 3:
             for i in range(195):
                 if boss_stage.block[i].block_x <= self.x + 20.1 < boss_stage.block[i].block_x + 40.2:
-                    if boss_stage.block[i].block_y <= self.y - 7 < boss_stage.block[i].block_y + 40:
+                    if boss_stage.block[i].block_y <= self.y - 3 < boss_stage.block[i].block_y + 40:
                         if boss_stage.block[i].box_color == 0 or boss_stage.block[i].box_color == 9\
                                 or boss_stage.block[i].box_color == 10 or boss_stage.block[i].box_color == 11:
                             #stage1_state.block[i].box_color = 8
@@ -320,7 +324,7 @@ class Bazzi:
                             break
 
     def get_bb(self):
-        return self.x - 11, self.y - 27, self.x + 11, self.y - 10
+        return self.x - 11, self.y - 23, self.x + 11, self.y - 10
 
     def add_event(self, event):
         self.event_que.insert(0, event)
