@@ -98,7 +98,6 @@ class RunState():
     @staticmethod
     def draw(boss):
         boss.image.clip_draw(int(boss.frame_x) * 120, boss.frame_y, 120, 207, boss.x, boss.y)
-    pass
 
 
 class DeathState():

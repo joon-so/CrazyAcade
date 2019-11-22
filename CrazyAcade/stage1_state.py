@@ -119,7 +119,6 @@ def enter():
     bazzi.stage = 1
     bazzi.x, bazzi.y = 40, 560
     game_world.add_object(bazzi, 3)
-    pass
 
 
 def exit():
@@ -128,15 +127,11 @@ def exit():
     screen_timer = 0
     screen_timer_2 = 0
     block_x, block_y = 39, 540
-    pass
 
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-
-    delay(0.01)
-    pass
 
 
 def draw():

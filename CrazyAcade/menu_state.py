@@ -19,7 +19,6 @@ def enter():
     game_start = load_image('resource/Game_start.png')
     out = load_image('resource/InGame_Button_Out.png')
     cursor = load_image('resource/hand_arrow.png')
-    pass
 
 
 def exit():
@@ -27,7 +26,6 @@ def exit():
     del(menu)
     del(game_start)
     del(out)
-    pass
 
 
 def update():
@@ -69,7 +67,6 @@ def draw():
     cursor.draw_now(mouse_x + 18, mouse_y - 20)
 
     update_canvas()
-    pass
 
 
 def pause():

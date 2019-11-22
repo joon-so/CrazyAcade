@@ -13,12 +13,9 @@ def enter():
     global help, cursor
     help = load_image('resource/Help_key.png')
     cursor = load_image('resource/hand_arrow.png')
-    pass
 
 
 def exit():
-    global help
-    del(help)
     pass
 
 
@@ -36,7 +33,6 @@ def draw():
     help.clip_draw(0, 0, 594, 264, 400, 400)
     cursor.draw_now(mouse_x + 18, mouse_y - 20)
     update_canvas()
-    pass
 
 
 def pause():
