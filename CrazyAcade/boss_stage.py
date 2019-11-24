@@ -42,7 +42,7 @@ def enter():
 
     bazzi = Bazzi()
     bazzi.stage = 3
-    bazzi.x, bazzi.y = 320, 140
+    bazzi.x, bazzi.y = 180, 140
     game_world.add_object(bazzi, 3)
 
     enemy = Boss()
