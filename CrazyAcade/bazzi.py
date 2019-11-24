@@ -138,19 +138,25 @@ class RunState():
     def do(bazzi):
         if bazzi.bazzi_dir == 1:
             bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-            bazzi.frame_y = 350
         elif bazzi.bazzi_dir == 2:
             bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-            bazzi.frame_y = 280
         elif bazzi.bazzi_dir == 3:
             bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-            bazzi.frame_y = 490
         elif bazzi.bazzi_dir == 4:
             bazzi.frame_x = (bazzi.frame_x + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
-            bazzi.frame_y = 420
 
         bazzi.x += bazzi.bazzi_dir_x * game_framework.frame_time * bazzi.speed
         bazzi.y += bazzi.bazzi_dir_y * game_framework.frame_time * bazzi.speed
+
+        if bazzi.bazzi_dir_x > 0:
+            bazzi.frame_y = 350
+        elif bazzi.bazzi_dir_x < 0:
+            bazzi.frame_y = 280
+        if bazzi.bazzi_dir_y > 0:
+            bazzi.frame_y = 490
+        elif bazzi.bazzi_dir_y < 0:
+            bazzi.frame_y = 420
+
         # collide block check
         for block in game_world.objects[0]:
             if collide(bazzi, block):
