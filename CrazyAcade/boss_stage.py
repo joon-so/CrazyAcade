@@ -76,7 +76,7 @@ def exit():
     screen_timer = 0
     screen_timer_2 = 0
     block_x, block_y = 39, 540
-    pass
+    Bazzi.in_bubble = 0
 
 
 def update():

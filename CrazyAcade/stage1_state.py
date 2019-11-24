@@ -123,6 +123,7 @@ def enter():
 
 def exit():
     global block_x, block_y, enemy_count, screen_timer, screen_timer_2
+    Bazzi.in_bubble = 0
     enemy_count = 0
     screen_timer = 0
     screen_timer_2 = 0
