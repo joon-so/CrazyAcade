@@ -246,6 +246,7 @@ class DeathState():
                     bazzi.death_animation_time = 0.025
                     if int(bazzi.frame_x) > 5:
                         bazzi.frame_x = 5
+                        bazzi.go_main = 1
 
                 elif bazzi.real_death == 2:
                     bazzi.frame_y = 140
@@ -285,6 +286,7 @@ class Bazzi:
     bubble_limit = 1
     in_bubble = 0
     def __init__(self):
+        self.go_main = 0
         self.bazzi_dir = 0
         self.x, self.y = 0, 0
         self.bazzi_dir_x = 0
