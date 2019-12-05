@@ -15,6 +15,7 @@ ingame_word = None
 enemy_count = 0
 screen_timer = 0
 screen_timer_2 = 0
+gameover_timer = 0
 
 running = True
 bazzi = None
@@ -29,7 +30,7 @@ block_x, block_y = 39, 540
 
 
 def enter():
-    global stage2_map, ingame_word, screen_timer, screen_timer_2, cursor
+    global stage2_map, ingame_word, screen_timer, screen_timer_2, cursor, gameover_timer
     global bazzi, block, enemy
     global block_y, block_x
 
@@ -85,7 +86,7 @@ def update():
 
 
 def draw():
-    global stage2_map, ingame_word, screen_timer, screen_timer_2
+    global stage2_map, ingame_word, screen_timer, screen_timer_2, gameover_timer
 
     clear_canvas()
     screen_timer += game_framework.frame_time
@@ -109,7 +110,18 @@ def draw():
     if enemy_count == 1:
         ingame_word.clip_draw(0, 125, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
         screen_timer_2 += game_framework.frame_time
-
+    if bazzi.go_main == 1:
+        ingame_word.clip_draw(0, 0, 405, 62, WIDTH // 2 - 50, HEIGHT // 2)
+        gameover_timer += game_framework.frame_time
+        if gameover_timer > 3:
+            game_framework.change_state(menu_state)
+            Bazzi.bubble_limit = 1
+            bazzi.bubble_count = 0
+            bazzi.go_main = 0
+            game_world.remove_object(bazzi)
+            for n in range(len(block)):
+                game_world.remove_object(block[n])
+            game_world.remove_object(enemy)
     update_canvas()
     pass
 
