@@ -9,23 +9,29 @@ menu = None
 game_start = None
 out = None
 cursor = None
+bgm = None
 mouse_x, mouse_y = 0, 0
 click_x, click_y = 0, 0
 
 def enter():
-    global menu, game_start, out, cursor, mouse_y, mouse_x
+    global menu, game_start, out, cursor, mouse_y, mouse_x, bgm
     mouse_y, mouse_x = 100, 100
+    bgm = load_music('sound/menubgm.mp3')
     menu = load_image('resource/Main.png')
     game_start = load_image('resource/Game_start.png')
     out = load_image('resource/InGame_Button_Out.png')
     cursor = load_image('resource/hand_arrow.png')
 
+    bgm.set_volume(64)
+    bgm.repeat_play()
+
 
 def exit():
-    global menu, game_start, out
+    global menu, game_start, out, bgm
     del(menu)
     del(game_start)
     del(out)
+    bgm.stop()
 
 
 def update():
