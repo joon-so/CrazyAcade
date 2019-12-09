@@ -55,7 +55,7 @@ def enter():
             block_y -= 40
             block_x = 39
         # no broken1
-        if i == 67 or i == 81 or i == 82 or i == 83 or i == 97:
+        if i == 82:
             box_color = 4
             box_broken = 1
         # no broken2
