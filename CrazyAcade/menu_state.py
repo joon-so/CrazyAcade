@@ -22,7 +22,7 @@ def enter():
     out = load_image('resource/InGame_Button_Out.png')
     cursor = load_image('resource/hand_arrow.png')
 
-    bgm.set_volume(64)
+    bgm.set_volume(70)
     bgm.repeat_play()
 
 

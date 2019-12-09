@@ -13,6 +13,7 @@ WIDTH, HEIGHT = 800, 600
 stage1_map = None
 ingame_word = None
 running = True
+bgm = None
 
 bazzi = None
 block = None
@@ -33,7 +34,7 @@ box_broken = 0
 
 
 def enter():
-    global stage1_map, ingame_word, screen_timer, screen_timer_2, gameover_timer
+    global stage1_map, ingame_word, screen_timer, screen_timer_2, gameover_timer, bgm
     global bazzi, block, enemy
     global block_x, block_y, box_color, box_broken
 
@@ -42,8 +43,11 @@ def enter():
     gameover_timer = 0
     block = []
     enemy = []
+    bgm = load_music('sound/billigebgm.mp3')
     stage1_map = load_image('resource/Stage1.png')
     ingame_word = load_image('resource/InGame_Image_Word.png')
+    bgm.set_volume(80)
+    bgm.repeat_play()
 
     for n in range(195):
         if block_x > 610:
