@@ -304,6 +304,8 @@ class Bazzi:
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
+        self.sound = load_wav('sound/bubble.wav')
+        self.sound.set_volume(50)
 
     def make_bubble(self):
         if self.stage == 1:
@@ -315,6 +317,7 @@ class Bazzi:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(stage1_state.block[i].block_x, stage1_state.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
+                            self.sound.play()
                             break
         elif self.stage == 2:
             for i in range(195):
@@ -325,6 +328,7 @@ class Bazzi:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(stage2_state.block[i].block_x, stage2_state.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
+                            self.sound.play()
                             break
         elif self.stage == 3:
             for i in range(195):
@@ -335,6 +339,7 @@ class Bazzi:
                             #stage1_state.block[i].box_color = 8
                             bubble = Bubble(boss_stage.block[i].block_x, boss_stage.block[i].block_y + 10, self.bubble_range, self.stage)
                             game_world.add_object(bubble, 1)
+                            self.sound.play()
                             break
 
     def get_bb(self):
