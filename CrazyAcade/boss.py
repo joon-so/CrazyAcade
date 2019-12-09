@@ -3,7 +3,6 @@ import random
 
 import game_world
 import game_framework
-from bazzi import Bazzi
 
 # Boss Run Speed
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30cm
@@ -110,11 +109,13 @@ next_state_table = {
 
 
 class Boss:
+    hp = 10
     def __init__(self):
         self.x, self.y = 180, 500
         self.frame_x, self.frame_y = 0, 0
         self.dir_x = 0
         self.dir_y = 0
+        #self.hp = 10
         self.image = load_image('resource/Monster_Boss.png')
         self.event_que = []
         self.cur_state = RunState

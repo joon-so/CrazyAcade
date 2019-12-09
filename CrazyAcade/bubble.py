@@ -6,6 +6,7 @@ from stage1_enemy import Enemy
 import stage2_state
 import boss_stage
 import bazzi
+from boss import Boss
 
 # Bubble Action Speed
 TIME_PER_ACTION = 0.5
@@ -86,7 +87,12 @@ class PopState():
         # Delete Enemy
         for enemy in game_world.objects[2]:
             if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, enemy):
-                delete_enemy(bubble, enemy)
+                if (bubble.stage == 3):
+                    Boss.hp -= game_framework.frame_time
+                    if Boss.hp <= 0:
+                        delete_enemy(bubble, enemy)
+                else:
+                    delete_enemy(bubble, enemy)
                 break
         for bazzi_check in game_world.objects[3]:
             if collide(bubble.x - 20.1, bubble.y - 28, bubble.x + 20.1, bubble.y + 12, bazzi_check):
@@ -289,7 +295,12 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y - 28, bubble.x - 20.1, bubble.y + 12, enemy):
-                        delete_enemy(bubble, enemy)
+                        if (bubble.stage == 3):
+                            Boss.hp -= game_framework.frame_time
+                            if Boss.hp <= 0:
+                                delete_enemy(bubble, enemy)
+                        else:
+                            delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 40.2 * (bubble.range_left + 1) + 20.1, bubble.y - 28, bubble.x - 20.1, bubble.y + 12, bazzi_check):
@@ -304,7 +315,12 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, enemy):
-                        delete_enemy(bubble, enemy)
+                        if (bubble.stage == 3):
+                            Boss.hp -= game_framework.frame_time
+                            if Boss.hp <= 0:
+                                delete_enemy(bubble, enemy)
+                        else:
+                            delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x + 20.1, bubble.y - 28, bubble.x + 40.2 * (bubble.range_right + 1) - 20.1, bubble.y + 12, bazzi_check):
@@ -319,7 +335,12 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, bubble.x + 20.1, bubble.y - 28, enemy):
-                        delete_enemy(bubble, enemy)
+                        if (bubble.stage == 3):
+                            Boss.hp -= game_framework.frame_time
+                            if Boss.hp <= 0:
+                                delete_enemy(bubble, enemy)
+                        else:
+                            delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 20.1, bubble.y - 7 - 40 * (bubble.range_down + 1) + 20, bubble.x + 20.1, bubble.y - 28, bazzi_check):
@@ -334,7 +355,12 @@ class PopState():
                 # Delete Enemy
                 for enemy in game_world.objects[2]:
                     if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, enemy):
-                        delete_enemy(bubble, enemy)
+                        if (bubble.stage == 3):
+                            Boss.hp -= game_framework.frame_time
+                            if Boss.hp <= 0:
+                                delete_enemy(bubble, enemy)
+                        else:
+                            delete_enemy(bubble, enemy)
                         break
                 for bazzi_check in game_world.objects[3]:
                     if collide(bubble.x - 20.1, bubble.y + 12, bubble.x + 20.1, bubble.y - 7 + 40 * (bubble.range_up + 1) - 20, bazzi_check):
