@@ -22,6 +22,7 @@ bazzi = None
 bazzi_running = False
 block = None
 enemy = None
+bgm = None
 
 # x 80.4 , y 81
 # x : left 39 ~ 601 right
@@ -30,7 +31,7 @@ block_x, block_y = 39, 540
 
 
 def enter():
-    global stage2_map, ingame_word, screen_timer, screen_timer_2, cursor, gameover_timer
+    global stage2_map, ingame_word, screen_timer, screen_timer_2, cursor, gameover_timer, bgm
     global bazzi, block, enemy
     global block_y, block_x
 
@@ -40,6 +41,9 @@ def enter():
     stage2_map = load_image('resource/stage2.png')
     ingame_word = load_image('resource/InGame_Image_Word.png')
     cursor = load_image('resource/hand_arrow.png')
+    bgm = load_music('sound/piratebgm.mp3')
+    bgm.set_volume(80)
+    bgm.repeat_play()
 
     bazzi = Bazzi()
     bazzi.stage = 3
@@ -72,13 +76,14 @@ def enter():
 
 
 def exit():
-    global block_x, block_y, enemy_count, screen_timer_2, screen_timer, gameover_timer
+    global block_x, block_y, enemy_count, screen_timer_2, screen_timer, gameover_timer, bgm
     enemy_count = 0
     screen_timer = 0
     screen_timer_2 = 0
     gameover_timer = 0
     block_x, block_y = 39, 540
     Bazzi.in_bubble = 0
+    bgm.stop()
 
 
 def update():
