@@ -11,6 +11,7 @@ from stage2_enemy import Enemy
 WIDTH, HEIGHT = 800, 600
 stage2_map = None
 ingame_word = None
+bgm = None
 
 enemy_count = 0
 screen_timer = 0
@@ -34,7 +35,7 @@ box_color, box_broken = 0, 0
 
 
 def enter():
-    global stage2_map, ingame_word, screen_timer_2, screen_timer, gameover_timer
+    global stage2_map, ingame_word, screen_timer_2, screen_timer, gameover_timer, bgm
     global bazzi, block, enemy
     global block_y, block_x, box_color, box_broken
 
@@ -43,6 +44,9 @@ def enter():
     gameover_timer = 0
     stage2_map = load_image('resource/Stage2.png')
     ingame_word = load_image('resource/InGame_Image_Word.png')
+    bgm = load_music('sound/piratebgm.mp3')
+    bgm.set_volume(80)
+    bgm.repeat_play()
 
     enemy = []
     block = []
@@ -115,13 +119,14 @@ def enter():
 
 
 def exit():
-    global block_x, block_y, enemy_count, screen_timer, screen_timer_2, gameover_timer
+    global block_x, block_y, enemy_count, screen_timer, screen_timer_2, gameover_timer, bgm
     enemy_count = 0
     screen_timer = 0
     screen_timer_2 = 0
     gameover_timer = 0
     block_x, block_y = 39, 540
     Bazzi.in_bubble = 0
+    bgm.stop()
 
 
 def update():
