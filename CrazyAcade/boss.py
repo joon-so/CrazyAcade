@@ -109,13 +109,12 @@ next_state_table = {
 
 
 class Boss:
-    hp = 10
+    hp = 4
     def __init__(self):
         self.x, self.y = 180, 500
         self.frame_x, self.frame_y = 0, 0
         self.dir_x = 0
         self.dir_y = 0
-        #self.hp = 10
         self.image = load_image('resource/Monster_Boss.png')
         self.event_que = []
         self.cur_state = RunState

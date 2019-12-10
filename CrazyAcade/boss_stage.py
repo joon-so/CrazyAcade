@@ -83,6 +83,7 @@ def exit():
     gameover_timer = 0
     block_x, block_y = 39, 540
     Bazzi.in_bubble = 0
+    Boss.hp = 4
     bgm.stop()
 
 
